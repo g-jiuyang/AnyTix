@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>票券細節
+    </title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="css/swiper-bundle.min.css" rel="stylesheet">
+    <link href="css/reset.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="anytix">
+      <div class="main-content" id="app">
+        <div class="container">
+          <div class="btn-back"><a class="btn-icon" href="index.html"><span class="material-icons">arrow_back</span></a></div>
+        </div>
+        <template v-if="loading">
+          <div class="container">
+            <div class="skeleton">
+              <div class="img r5-3"></div>
+              <div class="hr">
+                <div class="px-xxs">
+                  <div class="title"></div>
+                  <div class="text"> </div>
+                  <div class="text"> </div>
+                  <div class="text"> </div>
+                  <div class="text"> </div>
+                  <div class="text"> </div>
+                  <div class="text"> </div>
+                  <div class="text"> </div>
+                  <div class="text"> </div>
+                  <div class="text"> </div>
+                  <div class="text"> </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="container animated fadeIn" id="detail">
+            <div class="img detail-theme-img"><img src="./img/detail/detail-img4.png" alt=""></div>
+            <div class="p-md"> 
+              <h2 class="Title">卡比多多精靈特展門票優惠券</h2>
+              <p class="detail-caption caption2"><span class="material-icons">schedule</span>2021/10/04 10:00 ~ 2022/11/03 23:59</p>
+              <div class="content">
+                <p class="Body2">結帳時請出示揪票通優惠畫面享現金價95折優惠 (不得與其他優惠同步使用)</p><br>
+                <p class="Body2">分店介紹:</p>
+                <p class="Body2">台灣大道店</p>
+                <p class="Body2">地址：台中市西區台灣大道二段170號</p>
+                <p class="Body2">訂位電話：04-22060078</p><br>
+                <p class="Body2">崇德店</p>
+                <p class="Body2">地址：台中市北屯區文心路四段603號</p>
+                <p class="Body2">訂位電話：04-22429933</p><br>
+                <p class="Body2">逢甲店</p>
+                <p class="Body2">地址：台中市西屯區文華路11號</p>
+                <p class="Body2">訂位電話：04-24527277</p><br>
+                <p class="Body2">大里店</p>
+                <p class="Body2">地址：台中市大里區德芳南路212號</p>
+                <p class="Body2">訂位電話：04-24833908</p><br>
+                <p class="Body2">員林店</p>
+                <p class="Body2">地址：彰化縣埔心鄉員林大道七段500號</p>
+                <p class="Body2">訂位電話：04-8395018</p><br>
+                <p class="Body2">高雄店</p>
+                <p class="Body2">地址：高雄市左營區博愛二路318號</p>
+                <p class="Body2">訂位電話：07-5568895</p>
+              </div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab-bar-item" data-fancybox data-src="#shareDialog">
+              <div class="img"> <img src="./img/icon/ic-share-primary.png" alt=""></div><span class="caption2">分享票券</span>
+            </div>
+            <div class="tab-bar-item" data-fancybox data-src="#chooseTicket">
+              <div class="img"> <img src="./img/icon/ic-ticket-primary.png" alt=""></div><span class="caption2">領取票券</span>
+            </div>
+          </div>
+          <!-- 分享跳窗-->
+          <div class="dialog py-xl" id="shareDialog" style="display: none;">
+            <div class="column ai-center py-md px-sm">
+              <div class="img img-bf mb-md"><img src="img/bf-img.png" alt=""></div>
+              <div class="Title">將活動分享給你的朋友吧！</div>
+            </div>
+            <div class="d-flex jc-center pb-md">
+              <div class="px-xs column ai-center">
+                <div class="img mx-md my-sm" data-ratio="1" data-size="lg"><img src="img/detail/share-bf.png" alt=""></div><span class="caption2">beanfun!分享</span>
+              </div>
+              <div class="px-xs column ai-center">
+                <div class="img mx-md my-sm" data-ratio="1" data-size="lg"><img src="img/detail/share-ex.png" alt=""></div><span class="caption2">外部分享</span>
+              </div>
+            </div>
+          </div>
+          <!-- 選取票券-->
+          <div class="dialog no-close" id="chooseTicket" style="display: none;">
+            <div class="column ai-center">
+              <h3 class="Title pb-md">選擇票券</h3>
+              <div class="list-option-wrap" v-for="item in ticketOption">
+                <input class="hide" type="radio" :value="item.value" :id="item.name" v-model="chosenTicket">
+                <label class="list-option-label" :for="item.name">{{ item.label }}</label>
+              </div>
+              <button class="btn-primary block" :disabled="!chosenTicket" data-fancybox data-src="#getTicketDialog">領取票券</button><a class="text-btn text-mediumgray underline mx-md" onclick="$.fancybox.close();">取消</a>
+            </div>
+          </div>
+          <!-- 領取成功跳窗-->
+          <div class="dialog no-close" id="getTicketDialog" style="display: none;">
+            <div class="column ai-center py-md">
+              <div class="img mb-xxs" data-size="md" data-ratio="1"> <img src="/img/bf-img2.png" alt="領取成功圖"></div>
+              <div class="Title text-primary">領取成功！</div>
+              <div class="reward-wrap">
+                <div class="reward-wrap-img img"><img src="./img/detail/detail-img.png"></div>
+                <h4 class="Body2 reward-wrap-title">赤鬼牛排台中本店 95 折優惠券</h4>
+                <p class="reward-wrap-caption caption2"><span class="material-icons mr-xxs">schedule</span>2021/01/13 18:00 ~ 2021/12/31 23:59</p>
+              </div>
+              <button class="btn-primary block" onclick="window.location.href='./4.0-asset-detail.html'">查看票券</button><a class="text-btn text-mediumgray underline" href="./index.html">瀏覽其他票券</a>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
+    <script src="js/swiper-bundle.min.js"></script>
+    <script src="js/lottie.min.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      var jQfn = function (){
+      }
+      var vm = new Vue({
+          el: '#app',
+          data() {
+              return {
+                  loading: true,
+                  loadingTimer: 30,
+                  activeTab: 'all',
+                  chosenTicket: '',
+                  ticketOption: [
+                      {
+                          name: 'ticket1',
+                          label: '波比卡活動特展門票券',
+                          value: 1
+                      },{
+                          name: 'ticket2',
+                          label: '購買商品 95 折券',
+                          value: 2
+                      },{
+                          name: 'ticket3',
+                          label: '飲品折價券',
+                          value: 3
+                      },{
+                          name: 'ticket4',
+                          label: '現金 10 元券',
+                          value: 4
+                      },{
+                          name: 'ticket5',
+                          label: '買額送卡波里拉券',
+                          value: 5
+                      }
+                  ]
+              }
+          },
+          watch: {
+              activeTab: function() {
+              },
+          },
+          mounted: function () {
+              this.$nextTick(function () {
+                  window.setTimeout(function(){
+                      vm.loading = false
+                  }, vm.loadingTimer);
+                  jQfn()
+              })
+          },
+          methods: {
+              tabListControl: function(val) {
+              }
+          },
+          updated: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          }
+      })
+    </script>
+  </body>
+</html>

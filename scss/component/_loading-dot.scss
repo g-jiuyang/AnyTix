@@ -1,0 +1,35 @@
+/* loading */
+.loading {
+    text-align: center;
+    padding-bottom: 20px;
+
+    li {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: #26D07C;
+        animation: loading 1.5s ease-in-out infinite;
+
+        &:nth-child(2) {
+            animation-delay: .3s;
+        }
+
+        &:last-child {
+            margin-right: 0;
+            animation-delay: .6s;
+        }
+    }
+}
+
+@keyframes loading {
+    0% {}
+
+    15% {
+        transform: scale(0);
+    }
+
+    30% {
+        transform: scale(1);
+    }
+}

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>票券細節
+    </title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="css/swiper-bundle.min.css" rel="stylesheet">
+    <link href="css/reset.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="anytix">
+      <div class="main-content" id="app">
+        <div class="container">
+          <div class="btn-back"><a class="btn-icon" href="3.0-asset-list.html"><span class="material-icons">arrow_back</span></a></div>
+        </div>
+        <template v-if="loading">
+          <div class="container">
+            <div class="include">./template/_loading-detail.jade  </div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="container animated fadeIn" id="detail">
+            <div class="img detail-theme-img"><img src="./img/detail/detail-img.png" alt=""></div>
+            <div class="p-md"> 
+              <h2 class="Title">赤鬼牛排台中本店 95 折優惠券</h2>
+              <p class="detail-caption mb-md"><span class="material-icons">schedule</span>2021/10/04 10:00 ~ 2022/11/03 23:59</p>
+              <template v-if="!isQRcodeOpen">
+                <button class="btn-primary block round-2 mb-sm" data-fancybox data-src="#openWarning">
+                  <div class="img"><img src="./img/icon/ic-cached-white.png" alt=""></div>點我核銷此票券
+                </button>
+                <p class="Subhead2-M text-darkprimary t-c">注意：出示此頁面供店員操作進行核銷</p>
+              </template>
+              <template v-else>
+                <!-- 掃描 QRcode 的方式-->
+                <div class="d-flex ai-center"><img class="width-8 f-n-shrink" src="./img/QRcode.png" alt="">
+                  <p class="Subhead2-M text-darkprimary">注意：出示此QR Code供店員掃描核銷，請於5分鐘內核銷，超過時間請重開此頁</p>
+                </div>
+                <!-- 掃描 barcode 的方式-->
+                <div class="d-flex ai-center"><img class="w-100" src="./img/barcode.png" alt=""></div>
+                <!-- 代碼核銷的-->
+                <div class="caption1-M pb-xxs pt-md">輸入核銷代碼</div>
+                <div class="input-wrap mb-sm">
+                  <input class="input" id="pin" type="text" placeholder="請輸入代碼">
+                  <button class="btn-copy" @click="usePin"> <span class="text-dark btn-text">確認核銷</span></button>
+                </div>
+                <!-- 點確認核銷-->
+                <div class="alert alert-disabled">
+                  <div class="img" data-ratio="1" data-size="sm"> <img src="./img/icon/ic-ok-mediumgray.png" alt=""></div>已完成核銷
+                </div>
+                <!-- alert 狀態 (因 demo 暫時關閉)-->
+              </template>
+              <div class="content">
+                <h4 class="Subhead2-M">活動說明 </h4>
+                <p class="Body2">結帳時請出示揪票通優惠畫面享現金價95折優惠 (不得與其他優惠同步使用)</p><br>
+                <p class="Body2">分店介紹:</p>
+                <p class="Body2">台灣大道店</p>
+                <p class="Body2">地址：台中市西區台灣大道二段170號</p>
+                <p class="Body2">訂位電話：04-22060078</p><br>
+                <p class="Body2">崇德店</p>
+                <p class="Body2">地址：台中市北屯區文心路四段603號</p>
+                <p class="Body2">訂位電話：04-22429933</p><br>
+                <p class="Body2">逢甲店</p>
+                <p class="Body2">地址：台中市西屯區文華路11號</p>
+                <p class="Body2">訂位電話：04-24527277</p><br>
+                <p class="Body2">大里店</p>
+                <p class="Body2">地址：台中市大里區德芳南路212號</p>
+                <p class="Body2">訂位電話：04-24833908</p><br>
+                <p class="Body2">員林店</p>
+                <p class="Body2">地址：彰化縣埔心鄉員林大道七段500號</p>
+                <p class="Body2">訂位電話：04-8395018</p><br>
+                <p class="Body2">高雄店</p>
+                <p class="Body2">地址：高雄市左營區博愛二路318號</p>
+                <p class="Body2">訂位電話：07-5568895</p>
+              </div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab-bar-item" data-fancybox data-src="#shareDialog">
+              <div class="img"> <img src="./img/icon/ic-share-primary.png" alt=""></div><span class="caption2">分享票券</span>
+            </div>
+            <div class="tab-bar-item" onclick="window.location.href='./2.0-event-page.html'">
+              <div class="img"> <img src="./img/icon/ic-web-primary.png" alt=""></div><span class="caption2">前往活動</span>
+            </div>
+          </div>
+          <!-- 分享跳窗-->
+          <div class="dialog py-xl" id="shareDialog" style="display: none;">
+            <div class="column ai-center py-md px-sm">
+              <div class="img img-bf mb-md"><img src="img/bf-img.png" alt=""></div>
+              <div class="Title">將活動分享給你的朋友吧！</div>
+            </div>
+            <div class="d-flex jc-center pb-md">
+              <div class="px-xs column ai-center">
+                <div class="img mx-md my-sm" data-ratio="1" data-size="lg"><img src="img/detail/share-bf.png" alt=""></div><span class="caption2">beanfun!分享</span>
+              </div>
+              <div class="px-xs column ai-center">
+                <div class="img mx-md my-sm" data-ratio="1" data-size="lg"><img src="img/detail/share-ex.png" alt=""></div><span class="caption2">外部分享</span>
+              </div>
+            </div>
+          </div>
+          <!-- 開啟序號提醒-->
+          <div class="dialog" id="openWarning" style="display: none;">
+            <div class="column ai-center py-md">
+              <div class="Title text-warning mb-md">注意</div>
+              <p class="Subhead2-M t-c">（建議由店員操作）<br>是否核銷此票券？核銷後無法復原此票券</p>
+              <button class="btn-primary block" @click="openQRcode">確定</button><a class="text-btn text-mediumgray underline" onclick="$.fancybox.close();">取消</a>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
+    <script src="js/swiper-bundle.min.js"></script>
+    <script src="js/lottie.min.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      var jQfn = function (){
+          $('[data-close]').click(function() {
+            let closeID = $(this).attr('data-close')
+            $(closeID).fadeOut()
+          })
+      }
+      var vm = new Vue({
+          el: '#app',
+          data() {
+              return {
+                  loading: true,
+                  loadingTimer: 30,
+                  activeTab: 'all',
+                  isQRcodeOpen: false,
+                  usePin: false
+              }
+          },
+          watch: {
+              activeTab: function() {
+              },
+          },
+          mounted: function () {
+              this.$nextTick(function () {
+                  window.setTimeout(function(){
+                      vm.loading = false
+                  }, vm.loadingTimer);
+                  jQfn()
+              })
+          },
+          methods: {
+              openQRcode: function() {
+                  this.isQRcodeOpen = true 
+                  $.fancybox.close();
+              },
+              usePin: function() {
+                  this.usePin = true
+              }
+          },
+          updated: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          }
+      })
+    </script>
+  </body>
+</html>

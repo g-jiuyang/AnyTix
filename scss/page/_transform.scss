@@ -1,0 +1,179 @@
+.transform{
+    overflow: hidden;
+    p.title{
+        margin-bottom: calc(1 * var(--font-size));
+        text-align: center;
+        font-size: calc(1.15 * var(--font-size));
+        font-weight: 500;
+    }
+    p.desc{
+        margin-bottom: calc(2 * var(--font-size));
+        text-align: center;
+        font-size: calc(0.9375 * var(--font-size));
+        color: #666;
+    }
+    .get-prize{
+        width: auto;
+        .get-prize-spark {
+            transform: scale(1.2);
+            opacity: 1;
+            z-index: 1;
+            transition: 0.15s cubic-bezier(0.71, 0.16, 0.67, 1.25);
+        }
+    }
+}
+
+
+.toast{
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+    padding: calc(.7 * var(--font-size));
+    box-sizing: border-box;
+    background-color: $bg;
+    border-left: calc(0.5 * var(--font-size)) $bfPrimary solid;
+    border-radius: calc(0.8 * var(--font-size));
+    box-shadow: 0px 4px 20px rgba(158, 158, 158, 0.15);
+    position: fixed;
+    top: calc(1.1 * var(--font-size));
+    left: 0;
+    right: 0;
+    z-index: 1;
+    &.warning{
+        border-left: calc(0.5 * var(--font-size)) $bfWarning solid;
+    }
+    .icon{
+        display: flex;
+        align-items: center;
+        width: calc(1.3 * var(--font-size));
+        margin-right: calc(.3 * var(--font-size));
+    }
+    p{
+        width: calc(100% - calc(2.3 * var(--font-size)));
+        font-size: calc(.9 * var(--font-size));
+        font-weight: 500;
+        color: $bfDark;
+    }
+    .error-hide{
+        display: flex;
+        align-items: center;
+        img{
+            width: calc(1.1 * var(--font-size));
+        }
+    }
+}
+
+
+.get-prize {
+    transition: 0.15s;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .overlay-white {
+        background: white;
+        position: absolute;
+        width: calc( 15 * var(--font-size) );
+        height: calc( 15 * var(--font-size) );
+        z-index: 2;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        opacity: .7;
+    }
+}
+.get-prize-btn {
+    outline: unset;
+    border: unset;
+    margin: calc( 2 * var(--font-size) ) calc( -2 * var(--font-size) ) calc( 1.5 * var(--font-size) ) calc( -2 * var(--font-size) );
+    background: unset;
+    opacity: 0.2;
+    position: relative;
+    z-index: 3;
+    width: calc( 9.3 * var(--font-size) );
+    height: calc( 9.3 * var(--font-size) );
+    border-radius: calc( 9.3 * var(--font-size) );
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: calc( .08 * var(--font-size) ) solid transparentize($bfWhite, .8);
+    box-sizing: border-box;
+    text-align: center;
+    overflow: hidden;
+    img {
+        width: 60%;
+        margin-top: calc( -1 * var(--font-size) );
+    }
+    span {
+        margin-top: calc( -0.25 * var(--font-size) );
+    }
+}
+.loading-lottie {
+    position: absolute;
+    width: calc( 9.3 * var(--font-size) );
+    height: calc( 9.3 * var(--font-size) );
+    top: 0;
+    left:  0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    z-index: 4;
+}
+.get-prize-spark {
+    transform: scale(1);
+    opacity: 1;
+}
+.get-prize.active {
+    .get-prize-btn {
+        opacity: 1;
+        transition: 0.1s;
+        z-index: 2;
+        animation: glowing 1.2s ease-in-out 0.2s infinite normal both;
+    }
+}
+
+@keyframes glowing {
+    0% {
+        // border: 0 solid $bfPrimary;
+        box-shadow:
+                0 0 0 calc( .2 * var(--font-size) ) $bfPrimary, 
+                0 0 0 calc( 0 * var(--font-size) ) transparentize($bfPrimary, 0.85),
+                0 0 0 calc( 0 * var(--font-size) ) transparentize($bfPrimary, 0.85);
+    }
+    20% {
+        // border: 0.3 * var(--font-size) ) solid $bfPrimary;
+        box-shadow:
+                0 0 0 calc( 0.3 * var(--font-size) ) $bfPrimary, 
+                0 0 0 calc( 0 * var(--font-size) ) transparentize($bfPrimary, 0.85),
+                0 0 0 calc( 0 * var(--font-size) ) transparentize($bfPrimary, 0.85);
+    }
+    30% {
+        // border: calc( 0.5 * var(--font-size) ) solid $bfPrimary;
+        box-shadow:
+                0 0 0 calc( 0.5 * var(--font-size) ) $bfPrimary, 
+                0 0 0 calc( 0.65 * var(--font-size) ) transparentize($bfPrimary, 0.85),
+                0 0 0 calc( 0.65 * var(--font-size) ) transparentize($bfPrimary, 0.85);
+    }
+    60% {
+        // border: calc( 0.5 * var(--font-size) ) solid $bfPrimary;
+        box-shadow:
+                0 0 0 calc( 0.5 * var(--font-size) ) $bfPrimary, 
+                0 0 0 calc( 1.2 * var(--font-size) ) transparentize($bfPrimary, 0.85),
+                0 0 0 calc( 1.85 * var(--font-size) ) transparentize($bfPrimary, 0.85);
+    }
+    90% {
+        // border: calc( 0.5 * var(--font-size) ) solid $bfPrimary;
+        box-shadow:
+                0 0 0 calc( 0.5 * var(--font-size) ) $bfPrimary, 
+                0 0 0 calc( 1.2 * var(--font-size) ) transparentize($bfPrimary, 0.85),
+                0 0 0 calc( 1.85 * var(--font-size) ) transparentize($bfPrimary, 0.85);
+    }
+    100% {
+        // border: calc( 0.2 * var(--font-size) ) solid $bfPrimary;
+        box-shadow:
+                0 0 0 calc( .2 * var(--font-size) ) $bfPrimary, 
+                0 0 0 0 transparentize($bfPrimary, 0.85),
+                0 0 0 0 transparentize($bfPrimary, 0.85);
+    }
+}

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>揪票通首頁
+    </title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="css/swiper-bundle.min.css" rel="stylesheet">
+    <link href="css/reset.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="anytix">
+      <div class="main-content" id="app">
+        <template v-if="loading">
+          <div class="container pt-lg">
+            <div class="skeleton pb-none">
+              <div class="img r4-1"> </div>
+              <div class="title w-20"></div>
+              <div class="banner"></div>
+              <div class="text"></div>
+              <div class="text w-75"></div>
+                          <div class="title w-20 my-lg"></div>
+                          <div class="row">
+                            <div class="text w-15"></div>
+                            <div class="text w-15"></div>
+                            <div class="text w-15"></div>
+                          </div>
+                          <div class="list">
+                            <div class="img"></div>
+                            <div class="info">
+                              <div class="text line-2"></div>
+                              <div class="text w-75"></div>
+                            </div>
+                          </div>
+                          <div class="list">
+                            <div class="img"></div>
+                            <div class="info">
+                              <div class="text line-2"></div>
+                              <div class="text w-75"></div>
+                            </div>
+                          </div>
+                          <div class="list">
+                            <div class="img"></div>
+                            <div class="info">
+                              <div class="text line-2"></div>
+                              <div class="text w-75"></div>
+                            </div>
+                          </div>
+              <div class="hr"></div>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="container">
+            <div class="p-md t-c"><img class="w-100" src="./img/AnyTixLanding.png" alt=""></div>
+          </div>
+          <div class="container">
+            <h3 class="Headline2 section-title">精選活動</h3>
+          </div>
+          <div class="container-fluid">
+            <div class="swiper-container animated fadeIn">
+              <div class="swiper-wrapper"><a class="swiper-slide" href="2.0-event-page.html"> 
+                  <div class="slide-item-img swiper-zoom-container"> <img class="banner" src="./img/index/banner1.png"></div>
+                  <div class="slide-item-info">
+                    <h4 class="Headline2 slide-item-title">GASH 生日慶，百萬玩家同樂嗨起來！</h4>
+                    <p class="slide-item-caption caption2"><span class="material-icons">schedule</span>2021/10/04 10:00 ~ 2022/11/03 23:59</p>
+                  </div></a><a class="swiper-slide" href="2.0-event-page.html"> 
+                  <div class="slide-item-img swiper-zoom-container"> <img class="banner" src="./img/index/banner2.png"></div>
+                  <div class="slide-item-info">
+                    <h4 class="Headline2 slide-item-title">135353535135135！</h4>
+                    <p class="slide-item-caption caption2"><span class="material-icons">schedule</span>2021/10/04 10:00 ~ 2022/11/03 23:59</p>
+                  </div></a></div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+          <div class="container">
+            <h3 class="Headline2 section-title">所有票券</h3>
+          </div>
+          <div class="container-fluid animated fadeIn">
+            <div class="chip-tabs">
+              <template v-for="item in chipsList">
+                <div class="chip-tab-item" :class="item.value == activeTab? 'active': ''" @click="activeTab = item.value">{{ item.label }}</div>
+              </template>
+            </div>
+          </div>
+          <div class="container animated fadeIn">
+            <template v-for="item in cardList"><a class="list-card" :href="item.link" :class="tabListControl(item.category)" data-type="history">
+                <div class="list-card-img"><img :src="item.img">
+                  <div class="overlay-text caption2" v-if="!item.stock"> <span>當前數量索取完畢</span></div>
+                </div>
+                <div class="list-card-info"> 
+                  <h4 class="Body2 list-card-title">{{ item.title }}</h4>
+                  <p class="list-card-caption caption2"><span class="material-icons">schedule</span>{{item.endTime}} 截止</p>
+                </div></a></template>
+          </div>
+          <div class="container t-c pb-xl">
+            <button class="btn-primary outline">加載更多</button>
+          </div>
+        </template>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
+    <script src="js/swiper-bundle.min.js"></script>
+    <script src="js/lottie.min.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      var jQfn = function (){
+          var Swipes = new Swiper('.swiper-container', {
+              loop: false,
+              // speed: 400,
+              spaceBetween: 100,
+              pagination: {
+                  el: '.swiper-pagination',
+              },
+              slidesPerView: 1,
+              paginationClickable: true,
+              spaceBetween: 8,
+          });
+      }
+      var vm = new Vue({
+          el: '#app',
+          data() {
+              return {
+                  loading: true,
+                  loadingTimer: 2000,
+                  activeTab: 'all',
+                  chipsList: [
+                      {label: '全部', value: 'all'},
+                      {label: '熱門', value: 'hot'},
+                      {label: '最新', value: 'new'},
+                  ],
+                  cardList: [
+                      {
+                          img:'./img/index/card-list-img.png', 
+                          title:'我是一張實體票券', 
+                          link:'./1.3-ticket-detail_offline.html', 
+                          endTime:'2022/11/03 23:59', 
+                          category: 'hot',
+                          stock: true
+                      },
+                      {
+                          img:'./img/index/card-list-img.png', 
+                          title:'赤鬼牛排台中本店 95 折優惠券', 
+                          link:'./1.0-ticket-detail.html', 
+                          endTime:'2022/11/03 23:59', 
+                          category: 'hot',
+                          stock: true
+                      },
+                      {
+                          img:'./img/index/card-list-img2.png', 
+                          title:'千田薪之弓起殃藝術展 400 元起特惠票', 
+                          link:'./1.0-ticket-detail.html', 
+                          endTime:'2022/11/03 23:59', 
+                          category: 'new',
+                          stock: true
+                      },
+                      {
+                          img:'./img/index/card-list-img3.png', 
+                          title:'烏托邦演唱會仙俠傳', 
+                          link:'./1.1-ticket-detail_outOfStock.html', 
+                          endTime:'2022/11/03 23:59', 
+                          category: 'hot',
+                          stock: false
+                      },{
+                          img:'./img/index/card-list-img4.png', 
+                          title:'卡比多多精靈特展門票優惠券', 
+                          link:'./1.2-ticket-detail_multipleSheets.html', 
+                          endTime:'2022/11/03 23:59', 
+                          category: 'hot',
+                          stock: true
+                      },
+                      {
+                          img:'./img/index/card-list-img.png', 
+                          title:'赤鬼牛排台中本店 95 折優惠券', 
+                          link:'./1.0-ticket-detail.html', 
+                          endTime:'2022/11/03 23:59', 
+                          category: 'hot',
+                          stock: true
+                      },
+                      {
+                          img:'./img/index/card-list-img2.png', 
+                          title:'千田薪之弓起殃藝術展 400 元起特惠票', 
+                          link:'./1.0-ticket-detail.html', 
+                          endTime:'2022/11/03 23:59', 
+                          category: 'new',
+                          stock: true
+                      },
+                  ]
+              }
+          },
+          watch: {
+              activeTab: function() {
+                  this.tabListControl
+              },
+          },
+          mounted: function () {
+              this.$nextTick(function () {
+                  window.setTimeout(function(){
+                      vm.loading = false
+                  }, vm.loadingTimer);
+                  jQfn()
+              })
+          },
+          methods: {
+              tabListControl: function(val) {
+                  if (this.activeTab !== 'all') {
+                      if (val !== this.activeTab) {
+                          return 'hide'
+                      }
+                  }
+              }
+          },
+          updated: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          }
+      })
+    </script>
+  </body>
+</html>

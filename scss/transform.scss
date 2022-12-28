@@ -1,0 +1,16 @@
+@import "./basic/var";
+@import "./basic/icon";
+
+.anytix {
+    @import "./component/dialog";
+    @import "./component/button";
+
+    @import "./page/_transform";
+}
+
+
+
+
+
+
+

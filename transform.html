@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兌換獎勵</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <!-- animate-->
+    <link href="css/animate.css" rel="stylesheet">
+    <!-- dialog-->
+    <link href="css/jquery.fancybox.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/reset.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/transform.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="anytix">
+      <div class="main-content" id="app">
+          <div class="container pt-lg pb-xl animated fadeIn transform">
+            <p class="title">領取獎勵</p>
+            <p class="desc">點擊下方按鈕領取獎勵</p>
+            <div class="po-r px-md get-prize" :class="!prizeLoading? 'active': ''">
+              <button class="get-prize-btn bg-primary" @click="getPrize">
+                <img src="./img/icon/ic-gift-xl-white.png" alt="">
+                <span class="text-white">點我兌換</span>
+              </button>
+              <div class="overlay-white" v-if="prizeLoading"></div>
+              <div class="po-a loading-lottie" id="dot-loading" v-if="prizeLoading">
+              </div>
+              <img class="po-a center get-prize-spark" src="./img/event/spark.png" alt="取得獎品">
+            </div>
+          </div>
+          <!-- popup 兌獎成功-->
+          <div class="dialog transform" id="getPrize" style="display: none;">
+            <div class="column ai-center pt-md">
+              <img class="bf-img" src="./img/bf-img3.png" alt="">
+              <p class="title">兌換成功</p>
+              <p class="desc">恭喜你獲得</p>
+              <div class="item-list">
+                <ul>
+                  <li>Gamania 限定收藏品動效特殊版收藏款 x1</li>
+                  <li>精選 7-11 中杯熱拿鐵票券 x1</li>
+                </ul>
+              </div>
+              <button class="btn-primary block" type="button">前往查看</button>
+              <img class="po-a top get-prize-spark animated slideInDown" src="./img/event/spark-bg.png" alt="取得獎品">              
+            </div>
+          </div>
+          <!-- toast 訊息 -->
+          <div class="toast warning" ref="toast">
+            <span class="icon"><img src="./img/icon/ic-warning-s-seca.png" alt=""></span>
+            <!-- 已領取 -->
+            <p>已領取過此獎勵，去參加其他活動吧！</p>
+            <!-- 領取完畢 -->
+            <!-- <p>獎勵已全數被領取完畢。</p> -->
+            <!-- 領取失敗 -->
+            <!-- <p>領取獎勵失敗，請洽客服 (141000300)</p> -->
+            <span class="error-hide" @click="hideToast()"><img src="./img/icon/ic-close-s-dark.png" alt=""></span>
+          </div>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
+    <script src="js/lottie.min.js"></script>
+    <script src="js/event.js"></script>
+    <script>
+      var jQfn = function (){
+        var animation = bodymovin.loadAnimation({
+              container: document.getElementById('dot-loading'),
+              path: 'js/json/dot-loading.json',
+              renderer: 'svg',
+              loop: true,
+              autoplay: true,
+              name: "Demo Animation",
+          });
+      }
+      var vm = new Vue({
+          el: '#app',
+          data() {
+              return {
+                  prizeLoading: false,
+              }
+          },
+          methods: {
+              getPrize() {
+                  vm.prizeLoading = true
+                  window.setTimeout(function(){
+                      vm.prizeLoading = false
+                  }, 3000)
+
+                  window.setTimeout(function(){
+                    this.success = false
+                    $.fancybox.open( $('#getPrize'), {
+                      touch: false
+                    });
+                  }, 3000)
+              },
+              hideToast(){
+                this.$refs.toast.style.display='none'
+              },
+          },
+          updated() {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          },
+      })
+    </script>
+  </body>
+</html>

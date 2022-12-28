@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>票券細節
+    </title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="css/swiper-bundle.min.css" rel="stylesheet">
+    <link href="css/reset.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="anytix">
+      <div class="main-content" id="app">
+        <div class="container">
+          <div class="btn-back"><a class="btn-icon" href="3.0-asset-list.html"><span class="material-icons">arrow_back</span></a></div>
+        </div>
+        <template v-if="loading">
+          <div class="container">
+            <div class="include">./template/_loading-detail.jade  </div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="container animated fadeIn" id="detail">
+            <div class="img detail-theme-img"><img src="./img/detail/detail-img.png" alt=""></div>
+            <div class="p-md"> 
+              <h2 class="Title">我是一張實體票券</h2>
+              <p class="detail-caption mb-xs"><span class="material-icons">schedule</span>2021/10/04 10:00 ~ 2022/11/03 23:59</p>
+              <p class="detail-caption mb-xs"><span class="material-icons">place</span>台北市內湖區瑞湖街111號</p>
+              <button class="btn-primary block round-2" data-fancybox data-src="#openWarning" v-if="!isPinOpen">
+                <div class="img"><img src="./img/icon/ic-view-white.png" alt=""></div>查看序號
+              </button>
+              <div class="input-wrap mb-md" :class="copied? 'active': ''" v-else>
+                <input class="input" id="pin" type="text" readonly value="LKEHOIQJW22333">
+                <button class="btn-copy" @click="copyPin"> <span v-show="copied">複製成功</span><img src="./img/icon/ic-copy-primary.png" alt="" v-if="!copied">
+                  <template v-else><img src="./img/icon/ic-copied-primary.png" alt=""></template>
+                </button>
+              </div>
+              <div class="map-responsive">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.889810828235!2d121.57427421500697!3d25.071723583954697!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442ac7bfa51769b%3A0x83e43618f98ec6b7!2zMTE05Y-w5YyX5biC5YWn5rmW5Y2A55Ge5rmW6KGXMTEx6Jmf!5e0!3m2!1szh-TW!2stw!4v1639476293380!5m2!1szh-TW!2stw" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+              </div>
+              <div class="content">
+                <h4 class="Subhead2-M">活動說明 </h4>
+                <p class="Body2">結帳時請出示揪票通優惠畫面享現金價95折優惠 (不得與其他優惠同步使用)</p><br>
+                <p class="Body2">分店介紹:</p>
+                <p class="Body2">台灣大道店</p>
+                <p class="Body2">地址：台中市西區台灣大道二段170號</p>
+                <p class="Body2">訂位電話：04-22060078</p><br>
+                <p class="Body2">崇德店</p>
+                <p class="Body2">地址：台中市北屯區文心路四段603號</p>
+                <p class="Body2">訂位電話：04-22429933</p><br>
+                <p class="Body2">逢甲店</p>
+                <p class="Body2">地址：台中市西屯區文華路11號</p>
+                <p class="Body2">訂位電話：04-24527277</p><br>
+                <p class="Body2">大里店</p>
+                <p class="Body2">地址：台中市大里區德芳南路212號</p>
+                <p class="Body2">訂位電話：04-24833908</p><br>
+                <p class="Body2">員林店</p>
+                <p class="Body2">地址：彰化縣埔心鄉員林大道七段500號</p>
+                <p class="Body2">訂位電話：04-8395018</p><br>
+                <p class="Body2">高雄店</p>
+                <p class="Body2">地址：高雄市左營區博愛二路318號</p>
+                <p class="Body2">訂位電話：07-5568895</p>
+              </div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <button class="tab-bar-item" data-fancybox data-src="#shareDialog" :disabled="disabled.share">
+              <div class="img"> <img src="./img/icon/ic-share-primary.png" alt="分享票券" v-if="!disabled.share"><img src="./img/icon/ic-share-mediumgray.png" alt="停用分享票券" v-else></div><span class="caption2">分享票券</span>
+            </button>
+            <button class="tab-bar-item" onclick="window.location.href='./2.0-event-page.html'" :disabled="disabled.ticket">
+              <div class="img"> <img src="./img/icon/ic-web-primary.png" alt="" v-if="!disabled.web"><img src="./img/icon/ic-web-mediumgray.png" alt="" v-else></div><span class="caption2">前往活動</span>
+            </button>
+          </div>
+          <!-- 分享跳窗-->
+          <div class="dialog py-xl" id="shareDialog" style="display: none;">
+            <div class="column ai-center py-md px-sm">
+              <div class="img img-bf mb-md"><img src="img/bf-img.png" alt=""></div>
+              <div class="Title">將活動分享給你的朋友吧！</div>
+            </div>
+            <div class="d-flex jc-center pb-md">
+              <div class="px-xs column ai-center">
+                <div class="img mx-md my-sm" data-ratio="1" data-size="lg"><img src="img/detail/share-bf.png" alt=""></div><span class="caption2">beanfun!分享</span>
+              </div>
+              <div class="px-xs column ai-center">
+                <div class="img mx-md my-sm" data-ratio="1" data-size="lg"><img src="img/detail/share-ex.png" alt=""></div><span class="caption2">外部分享</span>
+              </div>
+            </div>
+          </div>
+          <!-- 開啟序號提醒-->
+          <div class="dialog" id="openWarning" style="display: none;">
+            <div class="column ai-center py-md">
+              <div class="Title text-warning mb-md">注意</div>
+              <p class="Subhead2-M t-c">你一但顯示序號後，此活動即無法使用贈予和交換，確定要顯示序號嗎？</p>
+              <button class="btn-primary block" @click="openPin">確定</button><a class="text-btn text-mediumgray underline" onclick="$.fancybox.close();">取消</a>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
+    <script src="js/swiper-bundle.min.js"></script>
+    <script src="js/lottie.min.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      var jQfn = function (){
+      }
+      var vm = new Vue({
+          el: '#app',
+          data() {
+              return {
+                  loading: true,
+                  loadingTimer: 30,
+                  activeTab: 'all',
+                  isPinOpen: false,
+                  copied: false,
+                  disabled: {
+                      web: true,
+                      share: true
+                  }
+              }
+          },
+          watch: {
+              activeTab: function() {
+              },
+          },
+          mounted: function () {
+              this.$nextTick(function () {
+                  window.setTimeout(function(){
+                      vm.loading = false
+                  }, vm.loadingTimer);
+                  jQfn()
+              })
+          },
+          methods: {
+              openPin: function() {
+                  this.isPinOpen = true 
+                  $.fancybox.close();
+              },
+              copyPin: function() {
+                  $('#pin').select();
+                  document.execCommand('copy');
+                  this.copied = true
+                  window.setTimeout(function(){
+                      vm.copied = false
+                  }, 5000);
+              }
+          },
+          updated: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          }
+      })
+    </script>
+  </body>
+</html>
