@@ -1607,7 +1607,7 @@
 .anytix .dialog {
   color: #333;
   min-width: 100%;
-  max-height: 90vh;
+  max-height: 90svh;
   overflow-x: hidden;
 }
 .anytix .dialog.fancybox-content {
