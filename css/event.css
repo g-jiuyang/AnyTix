@@ -1532,7 +1532,7 @@
 .base .dialog {
   color: #333;
   min-width: 100%;
-  max-height: calc(37 * var(--font-size));
+  max-height: 90vh;
   overflow-x: hidden;
 }
 .base .dialog.fancybox-content {
