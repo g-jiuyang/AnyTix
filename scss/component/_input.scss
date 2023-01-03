@@ -173,7 +173,7 @@
     }
 
     .input {
-        padding: 0 48px 0 0;
+        padding: 0;
         border-width: 0;
         flex-grow: 1;
         line-height: calc(1.25 * var(--font-size));
@@ -201,7 +201,7 @@
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    position: absolute;
+    // position: absolute;
     right: calc(.5 * var(--font-size));
     top: 0;
     bottom: 0;
@@ -214,7 +214,7 @@
     span {
         font-size: calc(0.75 * var(--font-size));
         line-height: calc(1 * var(--font-size));
-        position: absolute;
+        // position: absolute;
         left: calc(-3.25 * var(--font-size));
         display: block;
         background: $bfWhite;
