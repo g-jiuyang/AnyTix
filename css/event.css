@@ -1263,8 +1263,10 @@
   width: calc(1 * var(--font-size));
   padding-top: calc(1 * var(--font-size));
 }
-.base .img .h-full {
+.base .img .h-full,
+.base .img .vue-barcode-element {
   position: relative;
+  min-height: auto;
   max-height: 100%;
   min-width: auto;
   margin: auto;
@@ -1742,14 +1744,6 @@
 .base .list:last-of-type {
   border-bottom: 0 solid #f7f7f7;
 }
-@-webkit-keyframes fadeIn1 {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
 @keyframes fadeIn1 {
   0% {
     opacity: 0;
@@ -2070,8 +2064,7 @@
   height: 120%;
   background-image: linear-gradient(to right, #eee, #f4f4f4);
   transform: skew(-30deg);
-  -webkit-animation: loading infinite 1.2s ease;
-          animation: loading infinite 1.2s ease;
+  animation: loading infinite 1.2s ease;
 }
 .base .skeleton .text {
   margin-bottom: calc(1 * var(--font-size));
@@ -2091,8 +2084,7 @@
   height: 120%;
   background-image: linear-gradient(to right, #eee, #f4f4f4);
   transform: skew(-30deg);
-  -webkit-animation: loading infinite 1.5s ease;
-          animation: loading infinite 1.5s ease;
+  animation: loading infinite 1.5s ease;
 }
 .base .skeleton .text.line-2 {
   height: calc(2 * var(--font-size));
@@ -2118,8 +2110,7 @@
   height: 120%;
   background-image: linear-gradient(to right, #eee, #f4f4f4);
   transform: skew(-30deg);
-  -webkit-animation: loading infinite 1.5s ease;
-          animation: loading infinite 1.5s ease;
+  animation: loading infinite 1.5s ease;
 }
 .base .skeleton .img {
   background: #eee;
@@ -2140,8 +2131,7 @@
   height: 120%;
   background-image: linear-gradient(to right, #eee, #f4f4f4);
   transform: skew(-30deg);
-  -webkit-animation: loading infinite 1.2s ease;
-          animation: loading infinite 1.2s ease;
+  animation: loading infinite 1.2s ease;
 }
 .base .skeleton .img.r4-1 {
   width: 100%;
@@ -2191,14 +2181,6 @@
 }
 .base .skeleton .list {
   margin-bottom: calc(1 * var(--font-size));
-}
-@-webkit-keyframes loading {
-  0% {
-    left: -50%;
-  }
-  100% {
-    left: 110%;
-  }
 }
 @keyframes loading {
   0% {
@@ -2330,9 +2312,6 @@
 .base .input::-moz-placeholder {
   color: #999;
 }
-.base .input:-ms-input-placeholder {
-  color: #999;
-}
 .base .input::placeholder {
   color: #999;
 }
@@ -2375,9 +2354,6 @@
   outline: unset;
 }
 .base .search .input::-moz-placeholder, .base .search input.input::-moz-placeholder {
-  color: #999;
-}
-.base .search .input:-ms-input-placeholder, .base .search input.input:-ms-input-placeholder {
   color: #999;
 }
 .base .search .input::placeholder,
@@ -2539,8 +2515,7 @@
   opacity: 1;
   transition: 0.1s;
   z-index: 2;
-  -webkit-animation: glowing 1.2s ease-in-out 0.2s infinite normal both;
-          animation: glowing 1.2s ease-in-out 0.2s infinite normal both;
+  animation: glowing 1.2s ease-in-out 0.2s infinite normal both;
 }
 .base .get-prize-success {
   padding-top: calc(3 * var(--font-size));
@@ -2786,26 +2761,6 @@
   width: calc(2.625 * var(--font-size));
   padding-top: calc(2.625 * var(--font-size));
   z-index: 1;
-}
-@-webkit-keyframes glowing {
-  0% {
-    box-shadow: 0 0 0 calc(0.2 * var(--font-size)) #26d07c, 0 0 0 calc(0 * var(--font-size)) rgba(38, 208, 124, 0.15), 0 0 0 calc(0 * var(--font-size)) rgba(38, 208, 124, 0.15);
-  }
-  20% {
-    box-shadow: 0 0 0 calc(0.3 * var(--font-size)) #26d07c, 0 0 0 calc(0 * var(--font-size)) rgba(38, 208, 124, 0.15), 0 0 0 calc(0 * var(--font-size)) rgba(38, 208, 124, 0.15);
-  }
-  30% {
-    box-shadow: 0 0 0 calc(0.5 * var(--font-size)) #26d07c, 0 0 0 calc(0.65 * var(--font-size)) rgba(38, 208, 124, 0.15), 0 0 0 calc(0.65 * var(--font-size)) rgba(38, 208, 124, 0.15);
-  }
-  60% {
-    box-shadow: 0 0 0 calc(0.5 * var(--font-size)) #26d07c, 0 0 0 calc(1.2 * var(--font-size)) rgba(38, 208, 124, 0.15), 0 0 0 calc(1.85 * var(--font-size)) rgba(38, 208, 124, 0.15);
-  }
-  90% {
-    box-shadow: 0 0 0 calc(0.5 * var(--font-size)) #26d07c, 0 0 0 calc(1.2 * var(--font-size)) rgba(38, 208, 124, 0.15), 0 0 0 calc(1.85 * var(--font-size)) rgba(38, 208, 124, 0.15);
-  }
-  100% {
-    box-shadow: 0 0 0 calc(0.2 * var(--font-size)) #26d07c, 0 0 0 0 rgba(38, 208, 124, 0.15), 0 0 0 0 rgba(38, 208, 124, 0.15);
-  }
 }
 @keyframes glowing {
   0% {

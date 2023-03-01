@@ -1,0 +1,227 @@
+extends ./template/_pageTemplate.jade
+
+block title 
+    | 使用紀錄
+
+block content 
+    template(v-if="loading")
+        .container.pt-md
+            .skeleton
+                .d-flex.my-md.jc-between
+                    .text.line-2.w-85
+                    .text.line-2.w-10
+                .d-flex.mt-lg.mb-lg
+                    .text.line-2.w-15.mr-md
+                    .text.line-2.w-15
+                .d-flex.ai-start.mb-lg 
+                    .img.squre.mr-md(data-size="md")
+                    div.w-100
+                        .text.line-2
+                        .text 
+                        .text 
+                .d-flex.ai-start.mb-lg 
+                    .img.squre.mr-md(data-size="md")
+                    div.w-100
+                        .text.line-2
+                        .text 
+                        .text 
+                .d-flex.ai-start.mb-lg 
+                    .img.squre.mr-md(data-size="md")
+                    div.w-100
+                        .text.line-2
+                        .text 
+                        .text 
+    template(v-else)
+        .container.py-md.animated.fadeIn
+            .search
+                input.input.f-grow.mr-sm(type="text" placeholder="搜尋紀錄" v-model="searchInput")
+                button.btn-icon
+                    span.material-icons date_range
+        .container-fluid.animated.fadeIn
+            .tab-menu
+                template(v-for="(item,idx) in tabMenu")
+                    .tab-menu-item(:class="item.name === currentTab.name? currentTab.class:''" @click="tabMove(idx)")
+                        label {{ item.label }}
+            .tab-content
+                template(v-for="item in assetsList")
+                    .list.animated.fadeIn(:href="item.link" data-type="assets" v-show="item.type === currentTab.name && item.title.search(searchInput) !== -1" )
+                        .list-img
+                            img(:src="item.img")
+                        .list-info 
+                            h4.Body2.list-title {{ item.title }}
+                            p.list-caption.caption2 活動名稱： {{item.eventName}}
+                            p.list-caption.caption2 兌換時間： {{item.useTime}}
+                        span.badge(v-if="item.used" data-type="disabled") 已失效
+                div.column.ai-center(v-if="noResult")
+                    .no-result.img 
+                        img(src="./img/no-result.png", alt="")  
+                    span.text-mediumgray.Subhead2 沒有任何紀錄
+
+        // 分享的跳窗
+        #shareDialog.dialog.py-xl(style="display: none;")
+            .column.ai-center.py-md.px-sm
+                .img.img-bf.mb-md
+                    img(src="img/bf-img.png", alt="")
+                .Title 將活動分享給你的朋友吧！
+            .d-flex.jc-center.pb-md
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-bf.png", alt="")
+                    span.caption2 beanfun!分享
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-ex.png", alt="")
+                    span.caption2 外部分享
+
+
+block js 
+    script.
+
+        var jQfn = function (){
+        }
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    loading: true,
+                    loadingTimer: 30,
+                    agree: false,
+                    currentTab: {
+                        name:'invalidation',
+                        order: 1,
+                        class: 'active'
+                    },
+                    noResult: false,
+                    searchInput: '',
+                    tabMenu: [
+                        {
+                            name: 'invalidation',
+                            label: '已失效'       
+                        },
+                        {
+                            name: 'reward',
+                            label: '兌換獎勵'       
+                        },
+                    ],
+                    assetsList: [
+                        {
+                            title: '我是一張實體票券',
+                            img: './img/asset/card1.png',
+                            eventName: '圈圈圓圓圈圈',
+                            useTime: '2021/10/28 14:00',
+                            link: '4.4-asset-detail_offline.html',
+                            type: 'reward',
+                            used: false,
+                        },
+                        {
+                            title: '拉七斤湍券',
+                            img: './img/asset/card1.png',
+                            eventName: '圈圈圓圓圈圈',
+                            useTime: '2021/10/28 14:00',
+                            link: '4.1-asset-detail_invalidation.html',
+                            type: 'invalidation',
+                            used: true,
+                        },{
+                            title: '有嫌買禮好送券',
+                            img: './img/asset/card2.png',
+                            eventName: '圈圈圓圓圈圈',
+                            useTime: '2021/10/28 14:00',
+                            link: '4.1-asset-detail_invalidation.html',
+                            type: 'invalidation',
+                            used: true,
+                        },{
+                            title: '公尼去你好券',
+                            img: './img/asset/card3.png',
+                            eventName: '圈圈圓圓圈圈',
+                            useTime: '2021/10/28 14:00',
+                            link: '4.1-asset-detail_invalidation.html',
+                            type: 'invalidation',
+                            used: true,
+                        },{
+                            title: '齊聲大事功能天乎券',
+                            img: './img/asset/card4.png',
+                            eventName: '圈圈圓圓圈圈',
+                            useTime: '2021/10/28 14:00',
+                            link: '4.1-asset-detail_invalidation.html',
+                            type: 'invalidation',
+                            used: true,
+                        },{
+                            title: '齊聲大事功能天乎券',
+                            img: './img/asset/card4.png',
+                            eventName: '圈圈圓圓圈圈',
+                            useTime: '2021/10/28 14:00',
+                            link: '4.1-asset-detail_invalidation.html',
+                            type: 'invalidation',
+                            used: true,
+                        },{
+                            title: '顯示序號的票券',
+                            img: './img/asset/card5.png',
+                            eventName: '圈圈圓圓圈圈',
+                            useTime: '2021/10/28 14:00',
+                            link: '4.0-asset-detail.html',
+                            type: 'reward',
+                            used: false,
+                        },{
+                            title: '顯示掃描條碼的票券',
+                            img: './img/asset/card6.png',
+                            eventName: '圈圈圓圓圈圈',
+                            useTime: '2021/10/28 14:00',
+                            link: '4.2-asset-detail_scan.html',
+                            type: 'reward',
+                            used: false,
+                        },
+                        {
+                            title: '很多張的票券 x7',
+                            img: './img/asset/card6.png',
+                            eventName: '圈圈圓圓圈圈',
+                            useTime: '2021/10/28 14:00',
+                            link: '4.3-asset-detail_multiple.html',
+                            type: 'reward',
+                            used: false,
+                        },
+                    ]
+                }
+            },
+            watch: {
+                searchInput: function() {
+                    if( this.searchInput ) {
+                        let searchResult = this.assetsList.find(function(item, index, array){
+                            return item.title.search(vm.searchInput) !== -1
+                        })
+                        if(searchResult) {
+                            this.noResult = false
+                        } else {
+                            this.noResult = true
+                        }
+                    } else {
+                        this.noResult = false
+                    }
+                },
+            },
+            mounted: function () {
+                this.$nextTick(function () {
+                    window.setTimeout(function(){
+                        vm.loading = false
+                    }, vm.loadingTimer);
+                    jQfn()
+                })
+            },
+            methods: {
+                tabMove: function(idx) {
+                    let order = idx +1
+                    this.currentTab.name = this.tabMenu[idx].name
+                    if (order - this.currentTab.order > 0) {
+                        this.currentTab.order = order
+                        this.currentTab.class = "active toRight"
+                    } else if ( order - this.currentTab.order < 0 ) {
+                        this.currentTab.order = order
+                        this.currentTab.class = "active toLeft"
+                    }
+                }
+            },
+            updated: function () {
+                this.$nextTick(function () {
+                    jQfn()
+                })
+            }
+        })

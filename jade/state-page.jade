@@ -1,0 +1,57 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="icon" type="image/png" href="img/favicon.png")
+        title Document
+        style(type="text/css").
+            * {
+                padding: 0;
+                margin: 0;
+                font-family: "Noto Sans TC", "PingFangTC", 'Microsoft JhengHei';
+            }
+            html,body{
+                width: 100%;
+                padding: 0;
+                margin: 0;
+                text-align: center;
+            }
+            .center {
+                position: fixed;
+                top: 0;
+                bottom: 1rem;
+                left: 0;
+                right: 0;
+                margin: auto;
+                width: 60%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            .state-img {
+                display: inline-block;
+                width: 60%;
+                max-width: 260px;
+                padding-bottom: 1.3rem;
+            }
+            .state-img img {
+                width: 100%;
+            }
+            .error-text {
+                display: block;
+                font-size: .85rem;
+                line-height: 1.2;
+                color: 3333;
+                font-weight: 500;
+                padding-bottom: 2.5rem;
+            }
+    body 
+        .center 
+            .state-img
+                img(src="./img/under-construction.png", alt="新版籌備中，敬請期待")
+            span.error-text 新版籌備中，敬請期待
+
+            

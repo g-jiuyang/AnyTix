@@ -1,0 +1,186 @@
+extends ./template/_pageTemplate.jade
+
+block title 
+    | 揪票通首頁
+
+block content 
+    template(v-if="loading")
+        .container.pt-lg
+            include ./template/_loading-component.jade 
+            .skeleton.pb-none
+                .img.r4-1 
+                .title.w-20
+                .banner
+                .text
+                .text.w-75
+                +section-title
+                +tab-menu
+                +list-card
+                +list-card
+                +list-card
+                .hr
+    template(v-else)
+        .container
+            .p-md.t-c
+                img.w-100(src="./img/AnyTixLanding.png" alt="")
+        .container
+            h3.Headline2.section-title 精選活動
+        .container-fluid
+            .swiper-container.animated.fadeIn
+                .swiper-wrapper
+                    a.swiper-slide(href="2.0-event-page.html") 
+                        .slide-item-img.swiper-zoom-container 
+                            img.banner(src="./img/index/banner1.png")
+                        .slide-item-info
+                            h4.Headline2.slide-item-title GASH 生日慶，百萬玩家同樂嗨起來！
+                            p.slide-item-caption.caption2
+                                span.material-icons schedule
+                                |2021/10/04 10:00 ~ 2022/11/03 23:59
+                    a.swiper-slide(href="2.0-event-page.html") 
+                        .slide-item-img.swiper-zoom-container 
+                            img.banner(src="./img/index/banner2.png")
+                        .slide-item-info
+                            h4.Headline2.slide-item-title 135353535135135！
+                            p.slide-item-caption.caption2
+                                span.material-icons schedule
+                                |2021/10/04 10:00 ~ 2022/11/03 23:59
+                .swiper-pagination
+        .container
+            h3.Headline2.section-title 所有票券
+        .container-fluid.animated.fadeIn
+            .chip-tabs
+                template(v-for="item in chipsList")
+                    .chip-tab-item(:class="item.value == activeTab? 'active': ''" @click="activeTab = item.value") {{ item.label }}
+        .container.animated.fadeIn
+            template(v-for="item in cardList")
+                a.list-card(:href="item.link" :class="tabListControl(item.category)" data-type="history")
+                    .list-card-img
+                        img(:src="item.img")
+                        .overlay-text.caption2(v-if="!item.stock") 
+                            span 當前數量索取完畢
+                    .list-card-info 
+                        h4.Body2.list-card-title {{ item.title }}
+                        p.list-card-caption.caption2
+                            span.material-icons schedule
+                            |{{item.endTime}} 截止
+        .container.t-c.pb-xl
+            button.btn-primary.outline 加載更多
+
+
+
+
+block js 
+    script.
+
+        var jQfn = function (){
+            var Swipes = new Swiper('.swiper-container', {
+                loop: false,
+                // speed: 400,
+                spaceBetween: 100,
+                pagination: {
+                    el: '.swiper-pagination',
+                },
+                slidesPerView: 1,
+                paginationClickable: true,
+                spaceBetween: 8,
+            });
+        }
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    loading: true,
+                    loadingTimer: 2000,
+                    activeTab: 'all',
+                    chipsList: [
+                        {label: '全部', value: 'all'},
+                        {label: '熱門', value: 'hot'},
+                        {label: '最新', value: 'new'},
+                    ],
+                    cardList: [
+                        {
+                            img:'./img/index/card-list-img.png', 
+                            title:'我是一張實體票券', 
+                            link:'./1.3-ticket-detail_offline.html', 
+                            endTime:'2022/11/03 23:59', 
+                            category: 'hot',
+                            stock: true
+                        },
+                        {
+                            img:'./img/index/card-list-img.png', 
+                            title:'赤鬼牛排台中本店 95 折優惠券', 
+                            link:'./1.0-ticket-detail.html', 
+                            endTime:'2022/11/03 23:59', 
+                            category: 'hot',
+                            stock: true
+                        },
+                        {
+                            img:'./img/index/card-list-img2.png', 
+                            title:'千田薪之弓起殃藝術展 400 元起特惠票', 
+                            link:'./1.0-ticket-detail.html', 
+                            endTime:'2022/11/03 23:59', 
+                            category: 'new',
+                            stock: true
+                        },
+                        {
+                            img:'./img/index/card-list-img3.png', 
+                            title:'烏托邦演唱會仙俠傳', 
+                            link:'./1.1-ticket-detail_outOfStock.html', 
+                            endTime:'2022/11/03 23:59', 
+                            category: 'hot',
+                            stock: false
+                        },{
+                            img:'./img/index/card-list-img4.png', 
+                            title:'卡比多多精靈特展門票優惠券', 
+                            link:'./1.2-ticket-detail_multipleSheets.html', 
+                            endTime:'2022/11/03 23:59', 
+                            category: 'hot',
+                            stock: true
+                        },
+                        {
+                            img:'./img/index/card-list-img.png', 
+                            title:'赤鬼牛排台中本店 95 折優惠券', 
+                            link:'./1.0-ticket-detail.html', 
+                            endTime:'2022/11/03 23:59', 
+                            category: 'hot',
+                            stock: true
+                        },
+                        {
+                            img:'./img/index/card-list-img2.png', 
+                            title:'千田薪之弓起殃藝術展 400 元起特惠票', 
+                            link:'./1.0-ticket-detail.html', 
+                            endTime:'2022/11/03 23:59', 
+                            category: 'new',
+                            stock: true
+                        },
+                    ]
+                }
+            },
+            watch: {
+                activeTab: function() {
+                    this.tabListControl
+                },
+            },
+            mounted: function () {
+                this.$nextTick(function () {
+                    window.setTimeout(function(){
+                        vm.loading = false
+                    }, vm.loadingTimer);
+                    jQfn()
+                })
+            },
+            methods: {
+                tabListControl: function(val) {
+                    if (this.activeTab !== 'all') {
+                        if (val !== this.activeTab) {
+                            return 'hide'
+                        }
+                    }
+                }
+            },
+            updated: function () {
+                this.$nextTick(function () {
+                    jQfn()
+                })
+            }
+        })

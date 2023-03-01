@@ -1,0 +1,161 @@
+extends ./template/_pageTemplate.jade
+
+block title 
+    | 票券細節
+
+block content 
+    .container
+        .btn-back
+            a.btn-icon(href="3.0-asset-list.html")
+                span.material-icons arrow_back
+
+
+    template(v-if="loading")
+        .container
+            .include ./template/_loading-detail.jade  
+    template(v-else)
+        .container#detail.animated.fadeIn
+            .img.detail-theme-img
+                img(src="./img/detail/detail-img.png", alt="")
+            .p-md 
+                h2.Title 我是一張實體票券
+                p.detail-caption.mb-xs
+                    span.material-icons schedule
+                    |2021/10/04 10:00 ~ 2022/11/03 23:59
+                p.detail-caption.mb-xs
+                    span.material-icons place
+                    |台北市內湖區瑞湖街111號
+                button.btn-primary.block.round-2(data-fancybox data-src="#openWarning" v-if="!isPinOpen")
+                    .img
+                        img(src='./img/icon/ic-view-white.png', alt="")
+                    | 查看序號
+                    //- p.Subhead2-M.text-darkprimary.t-c.mb-sm 注意：出示此頁面供店員操作進行核銷
+                .input-wrap.mb-md(:class="copied? 'active': ''" v-else)
+                    input#pin.input(type="text" readonly value="LKEHOIQJW22333") 
+                    button.btn-copy(@click="copyPin") 
+                        span(v-show="copied") 複製成功
+                        img(src='./img/icon/ic-copy-primary.png', alt="" v-if="!copied")
+                        template(v-else)
+                            img(src='./img/icon/ic-copied-primary.png', alt="" )
+                .map-responsive
+                    iframe(src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.889810828235!2d121.57427421500697!3d25.071723583954697!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442ac7bfa51769b%3A0x83e43618f98ec6b7!2zMTE05Y-w5YyX5biC5YWn5rmW5Y2A55Ge5rmW6KGXMTEx6Jmf!5e0!3m2!1szh-TW!2stw!4v1639476293380!5m2!1szh-TW!2stw" style="border:0;" allowfullscreen="" loading="lazy")
+                .content
+                    h4.Subhead2-M 活動說明 
+                    p.Body2 結帳時請出示揪票通優惠畫面享現金價95折優惠 (不得與其他優惠同步使用)
+                    br
+                    p.Body2 分店介紹:
+                    p.Body2 台灣大道店
+                    p.Body2 地址：台中市西區台灣大道二段170號
+                    p.Body2 訂位電話：04-22060078
+                    
+                    br 
+                    p.Body2 崇德店
+                    p.Body2 地址：台中市北屯區文心路四段603號
+                    p.Body2 訂位電話：04-22429933
+
+                    br 
+                    p.Body2 逢甲店
+                    p.Body2 地址：台中市西屯區文華路11號
+                    p.Body2 訂位電話：04-24527277
+
+                    br
+                    p.Body2 大里店
+                    p.Body2 地址：台中市大里區德芳南路212號
+                    p.Body2 訂位電話：04-24833908
+
+                    br
+                    p.Body2 員林店
+                    p.Body2 地址：彰化縣埔心鄉員林大道七段500號
+                    p.Body2 訂位電話：04-8395018
+
+                    br
+                    p.Body2 高雄店
+                    p.Body2 地址：高雄市左營區博愛二路318號
+                    p.Body2 訂位電話：07-5568895
+        .tab-bar
+            button.tab-bar-item(data-fancybox data-src="#shareDialog" :disabled="disabled.share")
+                .img 
+                    img(src="./img/icon/ic-share-primary.png" , alt="分享票券" v-if="!disabled.share")
+                    img(src="./img/icon/ic-share-mediumgray.png", alt="停用分享票券" v-else)
+                span.caption2 分享票券
+            button.tab-bar-item(onclick="window.location.href='./2.0-event-page.html'"  :disabled="disabled.ticket")
+                .img 
+                    img(src="./img/icon/ic-web-primary.png", alt="" v-if="!disabled.web")
+                    img(src="./img/icon/ic-web-mediumgray.png", alt="" v-else)
+                span.caption2 前往活動
+        // 分享跳窗
+        #shareDialog.dialog.py-xl(style="display: none;")
+            .column.ai-center.py-md.px-sm
+                .img.img-bf.mb-md
+                    img(src="img/bf-img.png", alt="")
+                .Title 將活動分享給你的朋友吧！
+            .d-flex.jc-center.pb-md
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-bf.png", alt="")
+                    span.caption2 beanfun!分享
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-ex.png", alt="")
+                    span.caption2 外部分享
+        // 開啟序號提醒
+        #openWarning.dialog(style="display: none;")
+            .column.ai-center.py-md
+                .Title.text-warning.mb-md 注意
+                p.Subhead2-M.t-c 你一但顯示序號後，此活動即無法使用贈予和交換，確定要顯示序號嗎？
+                button.btn-primary.block(@click="openPin") 確定
+                a.text-btn.text-mediumgray.underline(onclick="$.fancybox.close();") 取消
+
+
+block js 
+    script.
+
+        var jQfn = function (){
+        }
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    loading: true,
+                    loadingTimer: 30,
+                    activeTab: 'all',
+                    isPinOpen: false,
+                    copied: false,
+                    disabled: {
+                        web: true,
+                        share: true
+                    }
+                }
+            },
+            watch: {
+                activeTab: function() {
+                },
+            },
+            mounted: function () {
+                this.$nextTick(function () {
+                    window.setTimeout(function(){
+                        vm.loading = false
+                    }, vm.loadingTimer);
+                    jQfn()
+                })
+            },
+            methods: {
+                openPin: function() {
+                    this.isPinOpen = true 
+                    $.fancybox.close();
+                },
+                copyPin: function() {
+                    $('#pin').select();
+                    document.execCommand('copy');
+                    this.copied = true
+                    window.setTimeout(function(){
+                        vm.copied = false
+                    }, 5000);
+                }
+            },
+            updated: function () {
+                this.$nextTick(function () {
+                    jQfn()
+                })
+            }
+        })

@@ -1,0 +1,148 @@
+extends ./template/_pageTemplate.jade
+
+block title 
+    | 票券細節
+
+block content 
+    .container
+        .btn-back
+            a.btn-icon(href="index.html")
+                span.material-icons arrow_back
+
+    template(v-if="loading")
+        .container
+            include ./template/_loading-detail.jade  
+    template(v-else)
+        .container#detail.animated.fadeIn
+            .img.detail-theme-img
+                img(src="./img/detail/detail-img.png", alt="")
+            .p-md 
+                h2.Title 我是一張實體票券
+                p.detail-caption.caption2.mb-xs
+                    span.material-icons schedule
+                    |2021/10/04 10:00 ~ 2022/11/03 23:59
+                p.detail-caption.caption2.mb-xs
+                    span.material-icons place
+                    |台北市內湖區瑞湖街111號
+                .map-responsive
+                    iframe(src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.889810828235!2d121.57427421500697!3d25.071723583954697!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442ac7bfa51769b%3A0x83e43618f98ec6b7!2zMTE05Y-w5YyX5biC5YWn5rmW5Y2A55Ge5rmW6KGXMTEx6Jmf!5e0!3m2!1szh-TW!2stw!4v1639476293380!5m2!1szh-TW!2stw" style="border:0;" allowfullscreen="" loading="lazy")
+                .content
+                    p.Body2 結帳時請出示揪票通優惠畫面享現金價95折優惠 (不得與其他優惠同步使用)
+                    br
+                    p.Body2 分店介紹:
+                    p.Body2 台灣大道店
+                    p.Body2 地址：台中市西區台灣大道二段170號
+                    p.Body2 訂位電話：04-22060078
+                    
+                    br 
+                    p.Body2 崇德店
+                    p.Body2 地址：台中市北屯區文心路四段603號
+                    p.Body2 訂位電話：04-22429933
+
+                    br 
+                    p.Body2 逢甲店
+                    p.Body2 地址：台中市西屯區文華路11號
+                    p.Body2 訂位電話：04-24527277
+
+                    br
+                    p.Body2 大里店
+                    p.Body2 地址：台中市大里區德芳南路212號
+                    p.Body2 訂位電話：04-24833908
+
+                    br
+                    p.Body2 員林店
+                    p.Body2 地址：彰化縣埔心鄉員林大道七段500號
+                    p.Body2 訂位電話：04-8395018
+
+                    br
+                    p.Body2 高雄店
+                    p.Body2 地址：高雄市左營區博愛二路318號
+                    p.Body2 訂位電話：07-5568895
+        .tab-bar
+            button.tab-bar-item(data-fancybox data-src="#shareDialog" :disabled="disabled.share")
+                .img 
+                    img(src="./img/icon/ic-share-primary.png" , alt="分享票券" v-if="!disabled.share")
+                    img(src="./img/icon/ic-share-mediumgray.png", alt="停用分享票券" v-else)
+                span.caption2 分享票券
+            button.tab-bar-item(data-fancybox data-src="#getTicketDialog" :disabled="disabled.ticket")
+                .img 
+                    img(src="./img/icon/ic-ticket-primary.png", alt="" v-if="!disabled.ticket")
+                    img(src="./img/icon/ic-ticket-mediumgray-outline.png", alt="" v-else)
+                span.caption2 領取票券
+        // 分享跳窗
+        #shareDialog.dialog.py-xl(style="display: none;")
+            .column.ai-center.py-md.px-sm
+                .img.img-bf.mb-md
+                    img(src="img/bf-img.png", alt="")
+                .Title 將活動分享給你的朋友吧！
+            .d-flex.jc-center.pb-md
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-bf.png", alt="")
+                    span.caption2 beanfun!分享
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-ex.png", alt="")
+                    span.caption2 外部分享
+        // 領取成功跳窗
+        #getTicketDialog.dialog.no-close(style="display: none;")
+            .column.ai-center.py-md
+                .img.mb-xxs(data-size="md" data-ratio="1") 
+                    img(src="/img/bf-img2.png", alt="領取成功圖")
+                .Title.text-primary 領取成功！
+                .reward-wrap
+                    .reward-wrap-img.img
+                        img(src="./img/detail/detail-img.png")
+                    h4.Body2.reward-wrap-title 我是一張實體票券
+                    p.reward-wrap-caption.caption2
+                        span.material-icons.mr-xxs schedule
+                        |2021/01/13 18:00 ~ 2021/12/31 23:59
+                button.btn-primary.block(onclick="window.location.href='./4.4-asset-detail_offline.html'") 查看票券
+                a.text-btn.text-mediumgray.underline(href="./index.html") 瀏覽其他票券
+
+
+block js 
+    script.
+        
+
+        var jQfn = function (){
+            $('[data-close]').click(function() {
+                let closeID = $(this).attr('data-close')
+                $(closeID).fadeOut()
+            })
+        }
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    loading: true,
+                    loadingTimer: 1000,
+                    activeTab: 'all',
+                    disabled: {
+                        ticket: true,
+                        share: true
+                    }
+                }
+            },
+            watch: {
+                activeTab: function() {
+                },
+            },
+            mounted: function () {
+                this.$nextTick(function () {
+                    window.setTimeout(function(){
+                        vm.loading = false
+                    }, vm.loadingTimer);
+                    jQfn()
+                })
+            },
+            methods: {
+                tabListControl: function(val) {
+                }
+            },
+            updated: function () {
+                this.$nextTick(function () {
+                    jQfn()
+                })
+            }
+        })

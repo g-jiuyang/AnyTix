@@ -1,0 +1,168 @@
+extends ./template/_pageTemplate.jade
+
+block title 
+    | 票券細節
+
+block content 
+    .container
+        .btn-back
+            a.btn-icon(href="3.0-asset-list.html")
+                span.material-icons arrow_back
+
+
+    template(v-if="loading")
+        .container
+            .include ./template/_loading-detail.jade  
+    template(v-else)
+        .container#detail.animated.fadeIn
+            .img.detail-theme-img
+                img(src="./img/detail/detail-img.png", alt="")
+            .p-md 
+                h2.Title 赤鬼牛排台中本店 95 折優惠券
+                p.detail-caption.mb-md
+                    span.material-icons schedule
+                    |2021/10/04 10:00 ~ 2022/11/03 23:59
+                template(v-if="!isQRcodeOpen")
+                    button.btn-primary.block.round-2.mb-sm(data-fancybox data-src="#openWarning")
+                        .img
+                            img(src='./img/icon/ic-cached-white.png', alt="")
+                        | 點我核銷此票券
+                    p.Subhead2-M.text-darkprimary.t-c 注意：出示此頁面供店員操作進行核銷
+                template(v-else)
+                    // 掃描 QRcode 的方式
+                    .d-flex.ai-center
+                        img.width-8.f-n-shrink(src="./img/QRcode.png", alt="")
+                        p.Subhead2-M.text-darkprimary 注意：出示此QR Code供店員掃描核銷，請於5分鐘內核銷，超過時間請重開此頁
+                    // 掃描 barcode 的方式
+                    .d-flex.ai-center
+                        img.w-100(src="./img/barcode.png", alt="")
+                    // 代碼核銷的
+                    .caption1-M.pb-xxs.pt-md 輸入核銷代碼
+                    .input-wrap.mb-sm
+                        input#pin.input(type="text" placeholder="請輸入代碼") 
+                        button.btn-copy(@click="usePin") 
+                            span.text-dark.btn-text 確認核銷
+                    // 點確認核銷
+                    .alert(class='alert-disabled')
+                        .img(data-ratio="1" data-size="sm") 
+                            img(src='./img/icon/ic-ok-mediumgray.png', alt="")
+                        | 已完成核銷
+                    // alert 狀態 (因 demo 暫時關閉)
+                    //- .alert-bar#warning(data-state="warning")
+                        span 核銷失敗，請確認核銷代碼是否正確或稍後再試。錯誤代碼：2sdsw
+                        .close(data-close="#warning")
+                .content
+                    h4.Subhead2-M 活動說明 
+                    p.Body2 結帳時請出示揪票通優惠畫面享現金價95折優惠 (不得與其他優惠同步使用)
+                    br
+                    p.Body2 分店介紹:
+                    p.Body2 台灣大道店
+                    p.Body2 地址：台中市西區台灣大道二段170號
+                    p.Body2 訂位電話：04-22060078
+                    
+                    br 
+                    p.Body2 崇德店
+                    p.Body2 地址：台中市北屯區文心路四段603號
+                    p.Body2 訂位電話：04-22429933
+
+                    br 
+                    p.Body2 逢甲店
+                    p.Body2 地址：台中市西屯區文華路11號
+                    p.Body2 訂位電話：04-24527277
+
+                    br
+                    p.Body2 大里店
+                    p.Body2 地址：台中市大里區德芳南路212號
+                    p.Body2 訂位電話：04-24833908
+
+                    br
+                    p.Body2 員林店
+                    p.Body2 地址：彰化縣埔心鄉員林大道七段500號
+                    p.Body2 訂位電話：04-8395018
+
+                    br
+                    p.Body2 高雄店
+                    p.Body2 地址：高雄市左營區博愛二路318號
+                    p.Body2 訂位電話：07-5568895
+        .tab-bar
+            .tab-bar-item(data-fancybox data-src="#shareDialog")
+                .img 
+                    img(src="./img/icon/ic-share-primary.png", alt="")
+                span.caption2 分享票券
+            .tab-bar-item(onclick="window.location.href='./2.0-event-page.html'")
+                .img 
+                    img(src="./img/icon/ic-web-primary.png", alt="")
+                span.caption2 前往活動
+        // 分享跳窗
+        #shareDialog.dialog.py-xl(style="display: none;")
+            .column.ai-center.py-md.px-sm
+                .img.img-bf.mb-md
+                    img(src="img/bf-img.png", alt="")
+                .Title 將活動分享給你的朋友吧！
+            .d-flex.jc-center.pb-md
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-bf.png", alt="")
+                    span.caption2 beanfun!分享
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-ex.png", alt="")
+                    span.caption2 外部分享
+        // 開啟序號提醒
+        #openWarning.dialog(style="display: none;")
+            .column.ai-center.py-md
+                .Title.text-warning.mb-md 注意
+                p.Subhead2-M.t-c （建議由店員操作）
+                    br
+                    |是否核銷此票券？核銷後無法復原此票券
+                button.btn-primary.block(@click="openQRcode") 確定
+                a.text-btn.text-mediumgray.underline(onclick="$.fancybox.close();") 取消
+
+
+block js 
+    script.
+
+        var jQfn = function (){
+            $('[data-close]').click(function() {
+              let closeID = $(this).attr('data-close')
+              $(closeID).fadeOut()
+            })
+        }
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    loading: true,
+                    loadingTimer: 30,
+                    activeTab: 'all',
+                    isQRcodeOpen: false,
+                    usePin: false
+                }
+            },
+            watch: {
+                activeTab: function() {
+                },
+            },
+            mounted: function () {
+                this.$nextTick(function () {
+                    window.setTimeout(function(){
+                        vm.loading = false
+                    }, vm.loadingTimer);
+                    jQfn()
+                })
+            },
+            methods: {
+                openQRcode: function() {
+                    this.isQRcodeOpen = true 
+                    $.fancybox.close();
+                },
+                usePin: function() {
+                    this.usePin = true
+                }
+            },
+            updated: function () {
+                this.$nextTick(function () {
+                    jQfn()
+                })
+            }
+        })

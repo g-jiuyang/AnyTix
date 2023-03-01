@@ -1,0 +1,134 @@
+extends ./template/_pageTemplate.jade
+
+block title 
+    | 票券細節
+
+block content 
+    .container
+        .btn-back
+            a.btn-icon(href="3.0-asset-list.html")
+                span.material-icons arrow_back
+
+
+    template(v-if="loading")
+        .container
+            include ./template/_loading-detail.jade  
+    template(v-else)
+        .container#detail.animated.fadeIn
+            .img.detail-theme-img
+                img(src="./img/detail/detail-img.png", alt="")
+            .p-md 
+                h2.Title 赤鬼牛排台中本店 95 折優惠券
+                p.detail-caption.mb-md(:class="alertStatus[status].class === 'alert-primary'? 'text-primary': ''")
+                    span.material-icons schedule
+                    |2021/10/04 10:00 ~ 2022/11/03 23:59
+                div(@click="changeStatus()")
+                    .alert(:class='alertStatus[status].class')
+                        .img(data-ratio="1" data-size="sm") 
+                            img(:src="alertStatus[status].icon", alt="")
+                        | {{ alertStatus[status].label }}
+                .content
+                    h4.Subhead2-M 活動說明 
+                    p.Body2 結帳時請出示揪票通優惠畫面享現金價95折優惠 (不得與其他優惠同步使用)
+                    br
+                    p.Body2 分店介紹:
+                    p.Body2 台灣大道店
+                    p.Body2 地址：台中市西區台灣大道二段170號
+                    p.Body2 訂位電話：04-22060078
+                    
+                    br 
+                    p.Body2 崇德店
+                    p.Body2 地址：台中市北屯區文心路四段603號
+                    p.Body2 訂位電話：04-22429933
+
+                    br 
+                    p.Body2 逢甲店
+                    p.Body2 地址：台中市西屯區文華路11號
+                    p.Body2 訂位電話：04-24527277
+
+                    br
+                    p.Body2 大里店
+                    p.Body2 地址：台中市大里區德芳南路212號
+                    p.Body2 訂位電話：04-24833908
+
+                    br
+                    p.Body2 員林店
+                    p.Body2 地址：彰化縣埔心鄉員林大道七段500號
+                    p.Body2 訂位電話：04-8395018
+
+                    br
+                    p.Body2 高雄店
+                    p.Body2 地址：高雄市左營區博愛二路318號
+                    p.Body2 訂位電話：07-5568895
+
+
+
+
+block js 
+    script.
+
+        var jQfn = function (){
+        }
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    loading: true,
+                    loadingTimer: 1000,
+                    status: 0,
+                    alertStatus: [
+                        {
+                            label: '已逾期，無法使用',
+                            icon: './img/icon/ic-warning-mediumgray.png',
+                            class: 'alert-disabled'
+                        },
+                        {
+                            label: '即將開始，敬請期待',
+                            icon: './img/icon/ic-bolt-primary.png',
+                            class: 'alert-primary'
+                        },
+                        {
+                            label: '已完成核銷',
+                            icon: './img/icon/ic-ok-mediumgray.png',
+                            class: 'alert-disabled'
+                        },
+                        {
+                            label: '鎖定中，無法使用',
+                            icon: './img/icon/ic-lock-mediumgray.png',
+                            class: 'alert-disabled'
+                        },
+                        {
+                            label: '已退票，無法使用',
+                            icon: './img/icon/ic-ticket-mediumgray.png',
+                            class: 'alert-disabled'
+                        },
+                    ]
+                }
+            },
+            watch: {
+                activeTab: function() {
+                },
+            },
+            mounted: function () {
+                this.$nextTick(function () {
+                    window.setTimeout(function(){
+                        vm.loading = false
+                    }, vm.loadingTimer);
+                    jQfn()
+                })
+            },
+            methods: {
+                changeStatus: function() {
+                    if ( this.status +1 < this.alertStatus.length ) {
+                        this.status++
+                    } else {
+                        this.status = 0
+                    }
+                }
+            },
+            updated: function () {
+                this.$nextTick(function () {
+                    jQfn()
+                })
+            }
+        })

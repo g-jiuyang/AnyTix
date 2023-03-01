@@ -1,0 +1,222 @@
+extends ./template/_pageTemplate.jade
+
+block title 
+    | 票券細節
+
+block content 
+    .container
+        .btn-back
+            a.btn-icon(href="3.0-asset-list.html")
+                span.material-icons arrow_back
+
+
+    template(v-if="loading")
+        .container
+            .include ./template/_loading-detail.jade  
+    template(v-else)
+        .container#detail.animated.fadeIn
+            .img.detail-theme-img
+                img(src="./img/detail/detail-img.png", alt="")
+            .p-md 
+                h2.Title 赤鬼牛排台中本店 95 折優惠券
+                p.detail-caption.mb-md
+                    span.material-icons schedule
+                    |2021/10/04 10:00 ~ 2022/11/03 23:59
+                button.btn-primary.block.round-2.mb-xs(data-fancybox data-src="#openCode" data-options='{"touch" : false}')
+                    .img
+                        img(src='./img/icon/ic-lock-white.png', alt="")
+                    | 解鎖序號
+                
+                button.btn-primary.outline.block.round-2.my-sm(data-fancybox data-src="#openUsed" data-options='{"touch" : false}')
+                    .img
+                        img(src='./img/icon/ic-view-primary.png', alt="")
+                    | 查看已解鎖序號
+                .content
+                    h4.Subhead2-M 活動說明 
+                    p.Body2 結帳時請出示揪票通優惠畫面享現金價95折優惠 (不得與其他優惠同步使用)
+                    br
+                    p.Body2 分店介紹:
+                    p.Body2 台灣大道店
+                    p.Body2 地址：台中市西區台灣大道二段170號
+                    p.Body2 訂位電話：04-22060078
+                    
+                    br 
+                    p.Body2 崇德店
+                    p.Body2 地址：台中市北屯區文心路四段603號
+                    p.Body2 訂位電話：04-22429933
+
+                    br 
+                    p.Body2 逢甲店
+                    p.Body2 地址：台中市西屯區文華路11號
+                    p.Body2 訂位電話：04-24527277
+
+                    br
+                    p.Body2 大里店
+                    p.Body2 地址：台中市大里區德芳南路212號
+                    p.Body2 訂位電話：04-24833908
+
+                    br
+                    p.Body2 員林店
+                    p.Body2 地址：彰化縣埔心鄉員林大道七段500號
+                    p.Body2 訂位電話：04-8395018
+
+                    br
+                    p.Body2 高雄店
+                    p.Body2 地址：高雄市左營區博愛二路318號
+                    p.Body2 訂位電話：07-5568895
+        .tab-bar
+            .tab-bar-item(data-fancybox data-src="#shareDialog")
+                .img 
+                    img(src="./img/icon/ic-share-primary.png", alt="")
+                span.caption2 分享票券
+            .tab-bar-item(onclick="window.location.href='./2.0-event-page.html'")
+                .img 
+                    img(src="./img/icon/ic-web-primary.png", alt="")
+                span.caption2 前往活動
+        // 分享跳窗
+        #shareDialog.dialog.py-xl(style="display: none;")
+            .column.ai-center.py-md.px-sm
+                .img.img-bf.mb-md
+                    img(src="img/bf-img.png", alt="")
+                .Title 將活動分享給你的朋友吧！
+            .d-flex.jc-center.pb-md
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-bf.png", alt="")
+                    span.caption2 beanfun!分享
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-ex.png", alt="")
+                    span.caption2 外部分享
+        // 解鎖序號
+        #openCode.dialog(style="display: none;")
+            .column.ai-center.pt-md
+                .Title.text-warning.mb-md 注意
+                p.Subhead2-M.t-c.px-sm.pb-lg 你一但解鎖序號後，此票券及無法使用贈予和交換，確定要解鎖序號嗎？
+                label.pb-sm 選擇解鎖張數
+                .d-flex.ai-center.jc-center.mb-sm
+                    button.btn-reset(:disabled="openCount <= 0" @click="openCount--")
+                        img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-minus-l-dark.png" alt="")
+                    input.input.w-40.t-c(type="number" v-model="openCount" :max="openCount")
+                    button.btn-reset(:disabled="openCount >= closedCode" @click="openCount++")
+                        img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-add-l-dark.png" alt="")
+                .caption1.mb-lg.d-flex.ai-center
+                    .img(data-ratio="1" data-size="sm")
+                        img(src='./img/icon/ic-ticket-darkgray.png', alt="")
+                    |可用張數 x{{closedCode}}
+                button.btn-primary.block(:disabled="!openCount || openLoading" @click="openUsedDialog" ) 
+                    .btn-loading#dot-loading(v-if="openLoading")
+                    span(v-else) 確定
+                a.text-btn.text-mediumgray.underline.mx-md(@click="closeReset") 取消
+        // 查看已解鎖序號
+        #openUsed.dialog(style="display: none;")
+            p.dialog-bar-title 查看序號
+            .dialog-body
+                p.dialog-subTitle 所有序號 ({{openedCode}})
+                template(v-for="item,idx in tickets" v-if="item.openDate")
+                    .input-wrap.w-100.mb-sm(:class="item.copied? 'active': ''")
+                        input.input(type="text" :id="'code' + idx" readonly :value="item.code") 
+                        button.btn-copy(@click="copyPin(idx)") 
+                            span.animated.fadeIn(v-show="item.copied") 複製成功
+                            img.animated.fadeIn(src='./img/icon/ic-copy-primary.png', alt="" v-if="!item.copied")
+                            template(v-else)
+                                img.animated.fadeIn(src='./img/icon/ic-copied-primary.png', alt="" )
+
+
+block js 
+    script.
+
+        var jQfn = function (){
+            var animation = bodymovin.loadAnimation({
+                container: document.getElementById('dot-loading'),
+                path: 'js/json/dot-loading-white.json',
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                name: "Demo Animation",
+            });
+        }
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    loading: true,
+                    loadingTimer: 30,
+                    isQRcodeOpen: false,
+                    openCount: 1,
+                    openLoading: false,
+                    tickets: [
+                        {code: 'LKEHOIQJW22333', openDate:'2021.10.27 19:33',copied: false},
+                        {code: 'LKEHOIQJW22333', openDate:'2021.10.27 19:33',copied: false},
+                        {code: 'LKEHOIQJW22333', openDate:'2021.10.27 19:33',copied: false},
+                        {code: 'LKEHOIQJW22333', openDate:'',copied: false},
+                        {code: 'LKEHOIQJW22333', openDate:'',copied: false},
+                        {code: 'LKEHOIQJW22333', openDate:'',copied: false},
+                        {code: 'LKEHOIQJW22333', openDate:'',copied: false},
+                    ]
+                }
+            },
+            watch: {
+                
+            },
+            mounted: function () {
+                this.$nextTick(function () {
+                    window.setTimeout(function(){
+                        vm.loading = false
+                    }, vm.loadingTimer);
+                    jQfn()
+                })
+            },
+            computed: {
+                // 计算属性的 getter
+                openedCode: function () {
+                    let opened = this.tickets.filter(function(item,idx,array){
+                        return item.openDate
+                    })
+                    return opened.length
+                },
+                closedCode: function () {
+                    let opened = this.tickets.filter(function(item,idx,array){
+                        return !item.openDate
+                    })
+                    return opened.length
+                },
+            },
+            methods: {
+                openUsedDialog: function() {
+                    this.openLoading = true
+                    let openCode = JSON.parse(JSON.stringify(this.openCount))
+                    this.tickets.map(function(item,idx,array){
+                        if (!item.openDate && openCode ) {
+                            openCode--
+                            item.openDate = new Date()
+                        }
+                    })
+                    window.setTimeout(function(){
+                        this.openLoading = false
+                        $.fancybox.close();
+                        $.fancybox.open( $('#openUsed'), {
+                            touch: false
+                        });
+                    }, 2000);
+                },
+                copyPin: function(idx) {
+                    let inputID = '#code' + idx ;
+                    $(inputID).select();
+                    document.execCommand('copy');
+                    this.tickets[idx].copied = true
+                    window.setTimeout(function(){
+                        vm.tickets[idx].copied = false
+                    }, 3000);
+                },
+                closeReset: function(){
+                    $.fancybox.close();
+                    this.openLoading = false
+                },
+            },
+            updated: function () {
+                this.$nextTick(function () {
+                    jQfn()
+                })
+            }
+        })

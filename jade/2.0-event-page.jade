@@ -1,0 +1,547 @@
+extends ./template/_eventPage.jade
+
+block title 
+    | 票券細節
+
+block content 
+    //- .container
+        .btn-back
+            a.btn-icon(href="index.html")
+                span.material-icons arrow_back
+    // [骨架屏]
+    template(v-if="loading")
+        .container.pt-lg
+            .skeleton
+                .img.r5-3.mb-sm
+                .title
+                .text 
+                .text.line-2.mb-md
+                .text.w-20.mb-md
+                .d-flex.mb-md
+                    .img.mr-sm.r4-1.f-shrink.pb-md 
+                    .img.mx-sm.r4-1.f-shrink.pb-md
+                    .img.ml-sm.r4-1.f-shrink.pb-md
+                .d-flex.mb-xl
+                    .img.mr-sm.r4-1.f-shrink.pb-sm 
+                    .img.mx-sm.r4-1.f-shrink.pb-sm 
+                    .img.ml-sm.r4-1.f-shrink.pb-sm
+                .text.w-20.my-lg
+                .text.line-2
+                .text 
+                .text.w-20.my-lg
+                .d-flex.ai-center
+                    .text.mr-md 
+                    .img.squre.mr-sm(data-size="md")
+                .text.w-20.my-lg
+                .d-flex.ai-start.mb-lg.mb-xl
+                    .img.squre.mr-md(data-size="lg")
+                    div.w-100
+                        .text.line-2
+                        .img.squre.mr-sm(data-size="md")
+                        .img.squre.mr-sm(data-size="md")
+                        .img.squre.mr-sm(data-size="md")
+                .d-flex.ai-start.mb-lg.mb-xl
+                    .img.squre.mr-md(data-size="lg")
+                    div.w-100
+                        .text.line-2
+                        .img.squre.mr-sm(data-size="md")
+                        .img.squre.mr-sm(data-size="md")
+                        .img.squre.mr-sm(data-size="md")
+                .d-flex.ai-start.mb-lg.mb-xl
+                    .img.squre.mr-md(data-size="lg")
+                    div.w-100
+                        .text.line-2
+                        .img.squre.mr-sm(data-size="md")
+                        .img.squre.mr-sm(data-size="md")
+                        .img.squre.mr-sm(data-size="md")
+    // END [骨架屏]
+    template(v-else)
+        .container.pt-lg.pb-xl.animated.fadeIn
+            .img.event-theme-img
+                img(src="./img/event/event-img.png" alt="")
+            .px-xs 
+                .d-flex.mb-md
+                    h2.Title.text-primary.pt-xxs.pr-md.f-grow 赤鬼牛排台中本店 95 折優惠券鬼牛排台中本店 95 
+                    button.btn-icon.btn-share(data-fancybox data-src="#shareDialog")
+                p.caption1.mb-md
+                    span.material-icons.mr-xxs schedule
+                    |2021/10/04 10:00 ~ 2022/11/03 23:59
+                .content.text-dark
+                    p.Body2 我是活動簡介我是活動簡介我是活動簡介我是活動簡介我是活動簡介我是我是活動簡介我是活動簡介我是活動簡介我是活動簡介我是活動簡介我是活動簡介我是我是活動簡介
+                    br
+            .px-xs 
+                h4.Headline2.pb-md.pt-xs 我的卡片 (3/4)
+            .d-flex.f-wrap.pb-xl
+                .small-card.card(v-for="(item,idx) in smallCards" @click="smallCardDetail(idx, item.count)")
+                    .btn-primary.circle.small-card-more(v-if="item.count" )
+                    .small-card-img
+                        img(:src="item.img" alt="")
+                        .overlay-text(v-if="!item.count")
+                            span 尚未擁有
+                    .small-card-title {{ item.title }}
+                    .small-card-count {{ item.count }}
+            .px-xs 
+                h4.Headline2.pb-md.pt-xs 我的任務(1)
+                a.d-flex.ai-center.card(href="javascript:;")
+                    p.text-black.pr-md.Body1.f-grow 儲值 999 (含) 以上進入怪物彈珠遊戲內，及可隨機獲得 1 張卡片
+                    button.btn-primary.circle.small.f-n-shrink.m-none 
+                        span.material-icons arrow_forward
+        .bg-cuntom-gray-1.py-xl
+            .container
+                .px-xs 
+                    h4.Headline2.mb-md.py-xs 獎品兌換區(2)
+                    // ===== 兌換卡 =====
+                    template(v-for="item in smallCardCollection")
+                        // [start] 大獎的卡片 =====
+                        template(v-if="item.child.length > 3")
+                            .card.award-card.big-prize 
+                                .stamp.img
+                                    img(src="./img/icon/ic-crown.png" alt="")
+                                .d-flex
+                                    .mr-sm
+                                        .img.award-card-img.first
+                                            img(:src="item.img" alt="")
+                                    .f-grow.column
+                                        h4.Headline2.award-card-title {{ item.title}}
+                                        .d-flex.f-grow.ai-end.pt-xxs
+                                            .d-flex.f-grow.f-wrap.pr-xs
+                                                // 小卡碎片
+                                                .small-card-item(v-for="smallCard in item.child")
+                                                    .small-card-wrap
+                                                        .img
+                                                            img(:src="smallCard.img" alt="")
+                                                        .status {{ smallCard.count }}/{{ smallCard.require }}
+
+                                            button.btn-primary.circle.award-btn(:disabled="!item.collection")
+                                                .img
+                                                    img(src="./img/icon/ic-gift-white.png" alt="")
+                        // [end] 大獎的卡片 =====
+                        // [start] 小獎的卡片 =====
+                        template(v-else)
+                            // 小獎的卡片
+                            .card.award-card
+                                .d-flex
+                                    .mr-sm
+                                        .img.award-card-img
+                                            img(:src="item.img" alt="")
+                                    .f-grow 
+                                        h4.Headline2.award-card-title {{ item.title}}
+                                        .d-flex.f-grow.ai-end.pt-xxs
+                                            .d-flex.f-grow.pr-md
+                                                // 小卡碎片
+                                                .small-card-item(v-for="smallCard in item.child")
+                                                    .small-card-wrap
+                                                        .img
+                                                            img(:src="smallCard.img" alt="")
+                                                        .status {{ smallCard.count }}/{{ smallCard.require }}
+                                            button.btn-primary.circle.award-btn(:disabled="!item.collection" @click="openPrizeDialog")
+                                                .img
+                                                    img(src="./img/icon/ic-gift-white.png" alt="")
+                        // [end]] 小獎的卡片 =====
+        // ===== 手風琴收合資訊 =====
+        .container-fluid.bg-white(style="padding-bottom: 30vh;") 
+            template(v-for="(item, idx) in accordion")
+                // [start] 手風琴 =====
+                .accordion(:class="item.expand" :id="'accordion' + (idx +1)")
+                    .accordion-label(@click="accordionToggle(idx)")
+                        label.Headline2 {{ item.label }}
+                        .accordion-icon.rotate
+                            span.material-icons expand_less
+                    .accordion-content.bg-white 
+                        div(v-html="item.content")
+                // [end]] 手風琴 =====
+
+
+        // 分享的跳窗
+        #shareDialog.dialog.py-xl(style="display: none;")
+            .column.ai-center.py-lg.px-sm
+                .img.img-bf.mb-md
+                    img(src="img/bf-img.png" alt="")
+                .Title 將活動分享給你的朋友吧！
+            .d-flex.jc-center.pb-lg
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-bf.png" alt="")
+                    span.caption2 beanfun!分享
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-ex.png" alt="")
+                    span.caption2 外部分享
+
+        // 小卡細節跳窗
+        #smallCardDetail.dialog(style="display: none;")
+            .column.ai-center.py-md
+                .small-detail-img.img
+                    img(:src="currentSmallCard.img")
+                .count {{currentSmallCard.count}}
+                .Title.py-md {{ currentSmallCard.label }}
+                p.Body2.pb-md.t-c 我是{{ currentSmallCard.label }}的敘述我是{{ currentSmallCard.label }}的敘述我是{{ currentSmallCard.label }}的敘述我是{{ currentSmallCard.label }}的敘述我是{{ currentSmallCard.label }}的敘述我是{{ currentSmallCard.label }}的敘述
+            .dialog-footer 
+                .d-flex.jc-around.px-lg
+                    button.column.ai-center.btn-reset(:disabled="currentSmallCard.disabled" @click="openGiveDialog")
+                        template(v-if="currentSmallCard.disabled")
+                            img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-gift-m-gray.png" alt="")
+                            span.caption2.text-mediumgray.pt-xxs.text-gray 贈送
+                        template(v-else)
+                            img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-gift-m-primary.png" alt="")
+                            span.caption2.text-mediumgray.pt-xxs 贈送
+                    button.column.ai-center.btn-reset(:disabled="currentSmallCard.disabled" @click="openExchangeDialog")
+                        template(v-if="currentSmallCard.disabled")
+                            img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-exchange-m-gray.png" alt="")
+                            span.caption2.text-mediumgray.pt-xxs.text-gray 交換
+                        template(v-else)
+                            img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-exchange-m-primary.png" alt="")
+                            span.caption2.text-mediumgray.pt-xxs 交換
+                    // 出售
+                    button.column.ai-center.btn-reset(:disabled="currentSmallCard.disabled" @click="sell = !sell")
+                        template(v-if="currentSmallCard.disabled")
+                            template(v-if="sell")
+                                img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-money-m-gray.png" alt="")
+                                span.caption2.text-mediumgray.pt-xxs.text-gray 出售
+                            template(v-else)
+                                img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-money_transfer-m-gray.png" alt="")
+                                span.caption2.text-mediumgray.pt-xxs.text-gray 取消出售
+                        template(v-else)
+                            template(v-if="sell")
+                                img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-money-m-primary.png" alt="")
+                                span.caption2.text-mediumgray.pt-xxs 出售
+                            template(v-else)
+                                img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-money_transfer-m-danger.png" alt="")
+                                span.caption2.text-mediumgray.pt-xxs 取消出售
+
+        // 兌獎跳窗
+        #getPrize.dialog(style="display: none;")
+            .column.ai-center.pt-md
+                .img.z1.round-lg(data-ratio="1" data-size="xl")
+                    img(src="./img/event/reward2.png" alt="兌換獎品")
+                p.Body2.pt-md.pb-xs.bold GASH 點數 100 點
+                template(v-if="!success")
+                    //- .checkbox
+                    //-     input#agreement(type="checkbox" v-model="agree")
+                    //-     label(for="agreement") 我已閱讀且同意活動說明和注意事項
+                    //- .po-r.px-md.get-prize(:class="agree? 'active': ''")
+                    //-     button.get-prize-btn.bg-primary(:disabled="!agree" @click="getPrize")
+                    //-         img(src="./img/icon/ic-gift-xl-white.png" alt="取得獎品")
+                    //-         span.text-white 點我兌換
+                    //-     img.po-a.center.get-prize-spark(v-if="agree" src="./img/event/spark.png" alt="取得獎品")
+                    .checkbox
+                        input#agreement(type="checkbox" v-model="agree" :disabled="prizeLoading")
+                        label(for="agreement") 我已閱讀且同意活動說明和注意事項
+                    .po-r.px-md.get-prize(:class="agree && !prizeLoading? 'active': ''")
+                        button.get-prize-btn.bg-primary(:disabled="!agree && !prizeLoading" @click="getPrize")
+                            img(src="./img/icon/ic-gift-xl-white.png" alt="取得獎品")
+                            span.text-white 點我兌換
+                        .overlay-white(v-if="prizeLoading")
+                        .po-a.loading-lottie#dot-loading(v-if="prizeLoading")
+                        img.po-a.center.get-prize-spark(v-if="agree" src="./img/event/spark.png" alt="取得獎品")
+                template(v-if="success")
+                    img.po-a.top.get-prize-spark.animated.slideInDown(src="./img/event/spark-bg.png" alt="取得獎品")
+                    .get-prize-success 
+                        span.success-text.bold 兌換成功
+                    button.btn-primary.block(onclick="window.location.href='./3.0-asset-list.html'") 查看獎品
+                    a.text-btn.text-mediumgray.underline(href="./2.0-event-page.html") 返回活動頁
+
+   
+        // 贈送跳窗
+        #giveDialog.dialog.no-close(style="display: none;")
+            .column.ai-center.pt-md
+                .d-flex.ai-center.w-100.pb-xl.px-md
+                    //- .img.mr-md.round.shadow-1.border-softwhite(data-ratio="1" data-size="xl")
+                    .small-card-action-img
+                        img(:src="currentSmallCard.img")
+                    span.f-grow 可用張數
+                    span ×{{currentSmallCard.count}}
+                label.pb-sm 選擇張數
+                .d-flex.ai-center.jc-center.pb-xl
+                    button.btn-reset(:disabled="giveCount <= 0" @click="giveCount--")
+                        img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-minus-l-dark.png" alt="")
+                    input.input.w-40.t-c(type="number" v-model="giveCount" :max="giveCount" disabled)
+                    button.btn-reset(:disabled="giveCount >= currentSmallCard.count" @click="giveCount++")
+                        img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-add-l-dark.png" alt="")
+                button.btn-primary.block(:disabled="!giveCount" onclick="$.fancybox.close();") 確定
+                a.text-btn.text-mediumgray.underline.mx-md(onclick="$.fancybox.close();") 取消
+        
+        // 交換跳窗
+        #exchangeDialog.dialog.no-close(style="display: none;")
+            .column.ai-center.pt-md
+                .d-flex.ai-center.w-100.pb-xl.px-md
+                    //- .img.mr-md.round.shadow-1.border-softwhite(data-ratio="1" data-size="xl")
+                    .small-card-action-img
+                        img(:src="currentSmallCard.img")
+                    span.f-grow 可用張數
+                    span ×{{currentSmallCard.count}}
+                label.pb-sm 選擇張數
+                .d-flex.ai-center.jc-center.pb-md
+                    button.btn-reset(:disabled="giveCount <= 0" @click="giveCount--")
+                        img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-minus-l-dark.png" alt="")
+                    input.input.w-40.t-c(type="number" v-model="giveCount" :max="giveCount > 3? 3 : giveCount" disabled)
+                    button.btn-reset(:disabled="giveCount >= currentSmallCard.count" @click="giveCount++")
+                        img.img.pt-none(data-ratio="1" data-size="md" src="./img/icon/ic-add-l-dark.png" alt="")
+                p.text-secondarya 單次交換最多 3 張
+                button.btn-primary.block(:disabled="!giveCount" onclick="$.fancybox.close();") 確定
+                a.text-btn.text-mediumgray.underline.mx-md(onclick="$.fancybox.close();") 取消
+        // 領取獎品成功跳窗(未啟用)
+        #getPrizeDialog.dialog.no-close(style="display: none;")
+            .column.ai-center.py-md
+                .img.z1.round(data-ratio="1" data-size="xl")
+                    img(src="./img/event/reward2.png" alt="兌換獎品")
+                p.Body2.pt-md.pb-xs.bold GASH 點數 100 點
+                img.po-a.top.get-prize-spark.animated.slideInDown(src="./img/event/spark-bg.png" alt="取得獎品")
+                .get-prize-success 
+                    span.success-text 兌換成功
+                button.btn-primary.block(onclick="window.location.href='./3.0-asset-list.html'") 查看獎品
+                a.text-btn.text-mediumgray.underline(href="./2.0-event-page.html") 返回活動頁
+
+
+
+block js 
+    script.
+
+        var jQfn = function (){
+            var animation = bodymovin.loadAnimation({
+                container: document.getElementById('dot-loading'),
+                path: 'js/json/dot-loading.json',
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                name: "Demo Animation",
+            });
+        }
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    sell: true,
+                    loading: true,
+                    loadingTimer: 1500,
+                    prizeLoading: false,
+                    activeTab: 'all',
+                    smallCards: [
+                        { 
+                            img: './img/event/event-card.png',
+                            title: '埃爾卡多拉咔',
+                            count: 3,
+                            disabled: false
+                        },
+                        { 
+                            img: './img/event/event-card.png',
+                            title: '埃爾卡多拉咔',
+                            count: 3,
+                            disabled: false
+                        },
+                        { 
+                            img: './img/event/event-card.png',
+                            title: '埃爾卡多拉咔',
+                            count: 3,
+                            disabled: true
+                        },
+                        { 
+                            img: './img/event/event-card.png',
+                            title: '埃爾卡多拉咔',
+                            count: 3,
+                            disabled: true
+                        },
+                        { 
+                            img: './img/event/event-card.png',
+                            title: '埃爾卡多拉咔',
+                            count: 0,
+                        },
+                        { 
+                            img: './img/event/event-card.png',
+                            title: '埃爾卡多拉咔',
+                            count: 0,
+                        },
+                    ],
+                    smallCardCollection: [
+                        {
+                            title: '怪物彈珠迷你模型收藏組 Vol.5',
+                            img: './img/event/reward1.png',
+                            collection: false,
+                            child: [
+                                {
+                                    img: './img/event/event-card1.png',
+                                    require: 3,
+                                    count: 1,
+                                },{
+                                    img: './img/event/event-card2.png',
+                                    require: 3,
+                                    count: 2,
+                                },{
+                                    img: './img/event/event-card3.png',
+                                    require: 3,
+                                    count: 1,
+                                },{
+                                    img: './img/event/event-card4.png',
+                                    require: 3,
+                                    count: 0,
+                                },{
+                                    img: './img/event/event-card1.png',
+                                    require: 3,
+                                    count: 0,
+                                },{
+                                    img: './img/event/event-card1.png',
+                                    require: 3,
+                                    count: 0,
+                                },
+                            ]
+                        }, {
+                            title: 'GASH 點數一百點最高上限 20 字示意',
+                            img: './img/event/reward2.png',
+                            collection: true,
+                            child: [
+                                {
+                                    img: './img/event/event-card1.png',
+                                    require: 3,
+                                    count: 1,
+                                },{
+                                    img: './img/event/event-card2.png',
+                                    require: 3,
+                                    count: 2,
+                                },{
+                                    img: './img/event/event-card2.png',
+                                    require: 3,
+                                    count: 2,
+                                }
+                            ]
+                        }, {
+                            title: 'GASH 點數 100 點',
+                            img: './img/event/reward2.png',
+                            collection: true ,
+                            child: [
+                                {
+                                    img: './img/event/event-card1.png',
+                                    require: 3,
+                                    count: 1,
+                                },{
+                                    img: './img/event/event-card2.png',
+                                    require: 3,
+                                    count: 2,
+                                }
+                            ]
+                        }
+                    ],
+                    currentSmallCard: {
+                        label: '',
+                        img:'',
+                        count: '',
+                        disabled: true
+                    },
+                    success: false,
+                    accordion:[
+                        {
+                            label: '其他說明',
+                            expand: '',
+                            content: `
+                                <p>我是其他說明我是其他說明我是其他說明我是其他說明我是其他說明我是我是活
+                                動簡介我是其他說明我是其他說明我是其他說明我是其他說明我是其他說明我是我是其他說明</p>
+                                <br>
+                                <p>我是其他說明我是其他說明我是其他說明我是其他說明我是其他說明我是我是活
+                                動簡介我是其他說明我是其他說明我是其他說明我是其他說明我是其他說明我是我是其他說明</p>
+                            `
+                        },
+                        {
+                            label: '注意事項',
+                            expand: '',
+                            content: `
+                                <p>我是注意事項我是注意事項我是注意事項我是注意事項我是注意事項我是我是活
+                                動簡介我是注意事項我是注意事項我是注意事項我是注意事項我是注意事項我是我是注意事項</p>
+                                <br>
+                                <p>我是注意事項我是注意事項我是注意事項我是注意事項我是注意事項我是我是活
+                                動簡介我是注意事項我是注意事項我是注意事項我是注意事項我是注意事項我是我是注意事項</p>
+                            `
+                        },
+                        {
+                            label: '注意事項',
+                            expand: '',
+                            content: `
+                                <p>我是注意事項我是注意事項我是注意事項我是注意事項我是注意事項我是我是活
+                                動簡介我是注意事項我是注意事項我是注意事項我是注意事項我是注意事項我是我是注意事項</p>
+                                <br>
+                                <p>我是注意事項我是注意事項我是注意事項我是注意事項我是注意事項我是我是活
+                                動簡介我是注意事項我是注意事項我是注意事項我是注意事項我是注意事項我是我是注意事項</p>
+                                <p>我是注意事項我是注意事項我是注意事項我是注意事項我是注意事項我是我是活
+                                動簡介我是注意事項我是注意事項我是注意事項我是注意事項我是注意事項我是我是注意事項</p>
+                            `
+                        },
+                    ],
+                    agree: false,
+                    giveCount: 1,
+                    exchangeCount: 1,
+                }
+            },
+            watch: {
+            },
+            mounted: function () {
+                this.$nextTick(function () {
+                    vm.prizeLoading = false
+                    window.setTimeout(function(){
+                        vm.loading = false
+                    }, vm.loadingTimer);
+                    jQfn()
+                })
+            },
+            methods: {
+                smallCardDetail: function(idx, count) {
+                    if (count) {
+                        this.currentSmallCard.label = this.smallCards[idx].title
+                        this.currentSmallCard.img = this.smallCards[idx].img
+                        this.currentSmallCard.count = this.smallCards[idx].count
+                        this.currentSmallCard.disabled = this.smallCards[idx].disabled
+                        
+                        $.fancybox.open( $('#smallCardDetail'), {
+                            touch: false
+                        });
+                    }
+                },
+                accordionToggle: function(idx) {
+                    this.accordion[idx].expand? this.accordion[idx].expand = '': this.accordion[idx].expand='expand'
+                    window.setTimeout(function(){
+                        if(vm.accordion[idx].expand === 'expand') {
+                            // 捲動到那個手風琴的位置
+                            let elem = document.querySelector('#accordion'+ (idx + 1))
+                            let top = elem.offsetTop - 60
+                            $([document.documentElement, document.body]).animate({
+                                scrollTop: top
+                            }, 1000);
+                            //- window.scrollTo({
+                            //-     top: top ,
+                            //-     left: 0,
+                            //-     behavior: 'smooth'
+                            //- })
+                        }
+                    }, 30)
+                    
+                },
+                getPrize: function() {
+                    vm.prizeLoading = true
+                    window.setTimeout(function(){
+                        vm.prizeLoading = false
+                        vm.success = true
+                    }, 3000)
+                },
+                openGiveDialog: function() {
+                    $.fancybox.close();
+                    $.fancybox.open( $('#giveDialog'), {
+                        touch: false
+                    });
+                },
+                openExchangeDialog: function() {
+                    $.fancybox.close();
+                    $.fancybox.open( $('#exchangeDialog'), {
+                        touch: false
+                    });
+                },
+                openPrizeDialog: function() {
+                    this.success = false
+                    this.agree = false
+                    $.fancybox.open( $('#getPrize'), {
+                        touch: false
+                    });
+                },
+            },
+            updated: function () {
+                this.$nextTick(function () {
+                    jQfn()
+                })
+            }
+        })

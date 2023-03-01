@@ -1,0 +1,167 @@
+extends ./template/_pageTemplate.jade
+
+block title 
+    | 票券細節
+
+block content 
+    .container
+        .btn-back
+            a.btn-icon(href="index.html")
+                span.material-icons arrow_back
+
+
+    template(v-if="loading")
+        .container
+            include ./template/_loading-detail.jade  
+    template(v-else)
+        .container#detail.animated.fadeIn
+            .img.detail-theme-img
+                img(src="./img/detail/detail-img4.png", alt="")
+            .p-md 
+                h2.Title 卡比多多精靈特展門票優惠券
+                p.detail-caption.caption2
+                    span.material-icons schedule
+                    |2021/10/04 10:00 ~ 2022/11/03 23:59
+                .content
+                    p.Body2 結帳時請出示揪票通優惠畫面享現金價95折優惠 (不得與其他優惠同步使用)
+                    br
+                    p.Body2 分店介紹:
+                    p.Body2 台灣大道店
+                    p.Body2 地址：台中市西區台灣大道二段170號
+                    p.Body2 訂位電話：04-22060078
+                    
+                    br 
+                    p.Body2 崇德店
+                    p.Body2 地址：台中市北屯區文心路四段603號
+                    p.Body2 訂位電話：04-22429933
+
+                    br 
+                    p.Body2 逢甲店
+                    p.Body2 地址：台中市西屯區文華路11號
+                    p.Body2 訂位電話：04-24527277
+
+                    br
+                    p.Body2 大里店
+                    p.Body2 地址：台中市大里區德芳南路212號
+                    p.Body2 訂位電話：04-24833908
+
+                    br
+                    p.Body2 員林店
+                    p.Body2 地址：彰化縣埔心鄉員林大道七段500號
+                    p.Body2 訂位電話：04-8395018
+
+                    br
+                    p.Body2 高雄店
+                    p.Body2 地址：高雄市左營區博愛二路318號
+                    p.Body2 訂位電話：07-5568895
+        .tab-bar
+            .tab-bar-item(data-fancybox data-src="#shareDialog")
+                .img 
+                    img(src="./img/icon/ic-share-primary.png", alt="")
+                span.caption2 分享票券
+            .tab-bar-item(data-fancybox data-src="#chooseTicket")
+                .img 
+                    img(src="./img/icon/ic-ticket-primary.png", alt="")
+                span.caption2 領取票券
+        // 分享跳窗
+        #shareDialog.dialog.py-xl(style="display: none;")
+            .column.ai-center.py-md.px-sm
+                .img.img-bf.mb-md
+                    img(src="img/bf-img.png", alt="")
+                .Title 將活動分享給你的朋友吧！
+            .d-flex.jc-center.pb-md
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-bf.png", alt="")
+                    span.caption2 beanfun!分享
+                .px-xs.column.ai-center
+                    .img.mx-md.my-sm(data-ratio="1" data-size="lg")
+                        img(src="img/detail/share-ex.png", alt="")
+                    span.caption2 外部分享
+        // 選取票券
+        #chooseTicket.dialog.no-close(style="display: none;")
+            .column.ai-center
+                h3.Title.pb-md 選擇票券
+                .list-option-wrap(v-for="item in ticketOption")
+                    input.hide(type="radio" :value="item.value" :id="item.name" v-model="chosenTicket") 
+                    label.list-option-label(:for="item.name") {{ item.label }}
+                    
+                button.btn-primary.block(:disabled="!chosenTicket" data-fancybox data-src="#getTicketDialog") 領取票券
+                a.text-btn.text-mediumgray.underline.mx-md(onclick="$.fancybox.close();") 取消
+        // 領取成功跳窗
+        #getTicketDialog.dialog.no-close(style="display: none;")
+            .column.ai-center.py-md
+                .img.mb-xxs(data-size="md" data-ratio="1") 
+                    img(src="/img/bf-img2.png", alt="領取成功圖")
+                .Title.text-primary 領取成功！
+                .reward-wrap
+                    .reward-wrap-img.img
+                        img(src="./img/detail/detail-img.png")
+                    h4.Body2.reward-wrap-title 赤鬼牛排台中本店 95 折優惠券
+                    p.reward-wrap-caption.caption2
+                        span.material-icons.mr-xxs schedule
+                        |2021/01/13 18:00 ~ 2021/12/31 23:59
+                button.btn-primary.block(onclick="window.location.href='./4.0-asset-detail.html'") 查看票券
+                a.text-btn.text-mediumgray.underline(href="./index.html") 瀏覽其他票券
+
+
+block js 
+    script.
+
+        var jQfn = function (){
+        }
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    loading: true,
+                    loadingTimer: 30,
+                    activeTab: 'all',
+                    chosenTicket: '',
+                    ticketOption: [
+                        {
+                            name: 'ticket1',
+                            label: '波比卡活動特展門票券',
+                            value: 1
+                        },{
+                            name: 'ticket2',
+                            label: '購買商品 95 折券',
+                            value: 2
+                        },{
+                            name: 'ticket3',
+                            label: '飲品折價券',
+                            value: 3
+                        },{
+                            name: 'ticket4',
+                            label: '現金 10 元券',
+                            value: 4
+                        },{
+                            name: 'ticket5',
+                            label: '買額送卡波里拉券',
+                            value: 5
+                        }
+                    ]
+                }
+            },
+            watch: {
+                activeTab: function() {
+                },
+            },
+            mounted: function () {
+                this.$nextTick(function () {
+                    window.setTimeout(function(){
+                        vm.loading = false
+                    }, vm.loadingTimer);
+                    jQfn()
+                })
+            },
+            methods: {
+                tabListControl: function(val) {
+                }
+            },
+            updated: function () {
+                this.$nextTick(function () {
+                    jQfn()
+                })
+            }
+        })

@@ -397,8 +397,10 @@ $border: (
 
   }
 
-  .h-full {
+  .h-full,
+  .vue-barcode-element {
     position: relative;
+    min-height: auto;
     max-height: 100%;
     min-width: auto;
     margin: auto;

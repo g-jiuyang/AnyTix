@@ -1264,8 +1264,10 @@
   width: calc(1 * var(--font-size));
   padding-top: calc(1 * var(--font-size));
 }
-.anytix .img .h-full {
+.anytix .img .h-full,
+.anytix .img .vue-barcode-element {
   position: relative;
+  min-height: auto;
   max-height: 100%;
   min-width: auto;
   margin: auto;
@@ -1817,14 +1819,6 @@
 .anytix .list:last-of-type {
   border-bottom: 0 solid #f7f7f7;
 }
-@-webkit-keyframes fadeIn1 {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
 @keyframes fadeIn1 {
   0% {
     opacity: 0;
@@ -2305,8 +2299,7 @@
   height: 120%;
   background-image: linear-gradient(to right, #eee, #f4f4f4);
   transform: skew(-30deg);
-  -webkit-animation: loading infinite 1.2s ease;
-          animation: loading infinite 1.2s ease;
+  animation: loading infinite 1.2s ease;
 }
 .anytix .skeleton .text {
   margin-bottom: calc(1 * var(--font-size));
@@ -2326,8 +2319,7 @@
   height: 120%;
   background-image: linear-gradient(to right, #eee, #f4f4f4);
   transform: skew(-30deg);
-  -webkit-animation: loading infinite 1.5s ease;
-          animation: loading infinite 1.5s ease;
+  animation: loading infinite 1.5s ease;
 }
 .anytix .skeleton .text.line-2 {
   height: calc(2 * var(--font-size));
@@ -2353,8 +2345,7 @@
   height: 120%;
   background-image: linear-gradient(to right, #eee, #f4f4f4);
   transform: skew(-30deg);
-  -webkit-animation: loading infinite 1.5s ease;
-          animation: loading infinite 1.5s ease;
+  animation: loading infinite 1.5s ease;
 }
 .anytix .skeleton .img {
   background: #eee;
@@ -2375,8 +2366,7 @@
   height: 120%;
   background-image: linear-gradient(to right, #eee, #f4f4f4);
   transform: skew(-30deg);
-  -webkit-animation: loading infinite 1.2s ease;
-          animation: loading infinite 1.2s ease;
+  animation: loading infinite 1.2s ease;
 }
 .anytix .skeleton .img.r4-1 {
   width: 100%;
@@ -2426,14 +2416,6 @@
 }
 .anytix .skeleton .list {
   margin-bottom: calc(1 * var(--font-size));
-}
-@-webkit-keyframes loading {
-  0% {
-    left: -50%;
-  }
-  100% {
-    left: 110%;
-  }
 }
 @keyframes loading {
   0% {
@@ -2565,9 +2547,6 @@
 .anytix .input::-moz-placeholder {
   color: #999;
 }
-.anytix .input:-ms-input-placeholder {
-  color: #999;
-}
 .anytix .input::placeholder {
   color: #999;
 }
@@ -2610,9 +2589,6 @@
   outline: unset;
 }
 .anytix .search .input::-moz-placeholder, .anytix .search input.input::-moz-placeholder {
-  color: #999;
-}
-.anytix .search .input:-ms-input-placeholder, .anytix .search input.input:-ms-input-placeholder {
   color: #999;
 }
 .anytix .search .input::placeholder,
@@ -2794,17 +2770,14 @@
   height: 6px;
   border-radius: 50%;
   background-color: #26D07C;
-  -webkit-animation: loading 1.5s ease-in-out infinite;
-          animation: loading 1.5s ease-in-out infinite;
+  animation: loading 1.5s ease-in-out infinite;
 }
 .anytix .loading li:nth-child(2) {
-  -webkit-animation-delay: 0.3s;
-          animation-delay: 0.3s;
+  animation-delay: 0.3s;
 }
 .anytix .loading li:last-child {
   margin-right: 0;
-  -webkit-animation-delay: 0.6s;
-          animation-delay: 0.6s;
+  animation-delay: 0.6s;
 }
 @keyframes loading {
   15% {
