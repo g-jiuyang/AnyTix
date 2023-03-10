@@ -147,7 +147,10 @@
           <div class="column ai-center py-md">
             <div class="Title text-warning mb-md">注意</div>
             <p class="Subhead2-M t-c">您點擊確定後，<br>此票券將於 24 小時內過期，需立即使用</p>
-            <button class="btn-primary block" @click="openQRcode">確定</button>
+            <button class="btn-primary block" @click="openQRcode">
+              <div class="btn-loading" id="dot-loading" v-show="btnloading"></div>
+              <span v-show="!btnloading">確定</span>
+            </button>
             <a class="text-btn text-mediumgray underline" onclick="$.fancybox.close();">取消</a>
           </div>
         </div>
@@ -181,12 +184,22 @@
       $('[data-close]').click(function () {
         let closeID = $(this).attr('data-close')
         $(closeID).fadeOut()
-      })
+      });
+      var animation = bodymovin.loadAnimation({
+        container: document.getElementById('dot-loading'),
+        // chrome 禁止直接讀取 local json，這邊要用 local server 才看的到
+        path: './js/json/dot-loading-white.json',
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        name: "Demo Animation",
+      });
     }
     var vm = new Vue({
       el: '#app',
       data() {
         return {
+          btnloading: false,
           loading: true,
           loadingTimer: 30,
           activeTab: 'all',
@@ -207,12 +220,26 @@
         })
       },
       methods: {
-        openQRcode: function () {
-          this.isQRcodeOpen = true
-          $.fancybox.close();
-        },
         usePin: function () {
           this.usePin = true
+        },
+        expandDetail: function (id) {
+          vm[name] = !vm[name]
+        },
+        /*openQRcode: function () {
+          this.isQRcodeOpen = true;
+          $.fancybox.close();
+        },*/
+        openQRcode: function () {
+          this.btnloading = true;
+          window.setTimeout(function () {
+            // $.fancybox.open( $('#exchangeSuccess'), {
+            //     touch: false
+            // });
+            vm.btnloading = false;
+            vm.isQRcodeOpen = true;
+            $.fancybox.close();
+          }, 3000);
         }
       },
       updated: function () {
